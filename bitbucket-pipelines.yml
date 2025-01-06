@@ -1,0 +1,23 @@
+image: ubuntu
+pipelines:
+  branches:
+    main:
+      - step:
+          name: Build and Test
+          script:
+            - docker build . --file Dockerfile --tag talhaultracodes/gfttreasure-frontend:latest
+            - echo ${DOCKERHUB_PASSWORD} | docker login --username $DOCKERHUB_USERNAME --password-stdin
+            - docker push talhaultracodes/gfttreasure-frontend:latest
+            - docker tag talhaultracodes/gfttreasure-frontend:latest talhaultracodes/gfttreasure-frontend:$BITBUCKET_COMMIT
+            - docker push talhaultracodes/gfttreasure-frontend:$BITBUCKET_COMMIT
+            - pipe: atlassian/ssh-run:0.4.1
+              variables:
+                SSH_USER: root
+                SERVER: 46.202.194.29
+                COMMAND: "bash /root/docker-compose/sales/prod-sales.sh"
+          services:
+            - docker
+definitions:
+  services:
+    docker:
+      memory: 3072
