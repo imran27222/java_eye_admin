@@ -6,7 +6,7 @@ pipelines:
           name: Build and Test
           script:
             - docker build . --file Dockerfile --tag talhaultracodes/gfttreasure-frontend:latest
-            - echo ${DOCKERHUB_PASSWORD} | docker login --username $DOCKERHUB_USERNAME --password-stdin
+            - echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
             - docker push talhaultracodes/gfttreasure-frontend:latest
             - docker tag talhaultracodes/gfttreasure-frontend:latest talhaultracodes/gfttreasure-frontend:$BITBUCKET_COMMIT
             - docker push talhaultracodes/gfttreasure-frontend:$BITBUCKET_COMMIT
