@@ -1,11 +1,28 @@
+# Stage 1: Build Stage
 FROM node:lts-alpine as build-stage
+
+# Set the working directory
 WORKDIR /app
-COPY package*.json /app/
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
 RUN npm install
-COPY ./ /app/
+
+# Copy the entire project
+COPY . .
+
+# Build the Vite app for production
 RUN npm run build
-# Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
+
+# Stage 2: Production Stage
 FROM nginx:alpine
-COPY --from=build-stage /app/build/ /usr/share/nginx/html
-# Copy the default nginx.conf provided by tiangolo/node-frontend
-COPY --from=build-stage /app/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy the built files from the build stage to Nginx's web root
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+
+# Optional: Copy a custom nginx.conf file if you have one
+# Uncomment the following line if you have a custom nginx.conf
+# COPY --from=build-stage /app/nginx.conf /etc/nginx/conf.d/default.conf
+
