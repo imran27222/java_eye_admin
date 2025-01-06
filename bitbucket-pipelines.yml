@@ -14,7 +14,7 @@ pipelines:
               variables:
                 SSH_USER: root
                 SERVER: 46.202.194.29
-                COMMAND: "bash /root/docker-compose/nft/frontent.sh"
+                COMMAND: "bash /root/docker-compose/nft/frontend.sh"
           services:
             - docker
 definitions:
