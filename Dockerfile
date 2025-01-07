@@ -26,6 +26,8 @@ COPY --from=build-stage /app/dist /usr/share/nginx/html
 # Uncomment the following line if you have a custom nginx.conf
 # COPY --from=build-stage /app/nginx.conf /etc/nginx/conf.d/default.conf
 
+# Expose the port
+EXPOSE 80
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
