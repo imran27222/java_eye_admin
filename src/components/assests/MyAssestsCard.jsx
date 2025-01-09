@@ -1,5 +1,6 @@
 import React from "react";
 import { CreditCardIcon, CurrencyDollarIcon, GiftIcon, ShareIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router";
 
 const MyAssetsCard = () => {
   return (
@@ -14,10 +15,12 @@ const MyAssetsCard = () => {
 
         {/* Center Section */}
         <div className="flex flex-col md:flex-row justify-center gap-6 text-center pb-4 md:pb-0">
-          <div className="flex flex-col items-center">
+          <Link to="/deposit" className="flex flex-col items-center text-white hover:text-blue-600">
+            {/* <div className="flex flex-col items-center"> */}
             <CreditCardIcon className="h-6 w-6" />
             <span className="mt-2">Deposit</span>
-          </div>
+            {/* </div> */}
+          </Link>
           <div className="flex flex-col items-center">
             <CurrencyDollarIcon className="h-6 w-6" />
             <span className="mt-2">Withdraw</span>
