@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router";
+import { signin } from "../store/user/userSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, error, token } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -35,12 +40,19 @@ const Login = () => {
     return isValid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
       // Handle form submission (e.g., send data to backend)
-      console.log("Form data:", formData);
+      // console.log("Form data:", formData);
+
+      // Dispatch the thunk
+      dispatch(signin(formData)).then((unwrapResult) => {
+        if (unwrapResult.payload) {
+          navigate("/");
+        }
+      });
     }
   };
 

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import axios from "../utils/axios";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +17,8 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,7 +59,27 @@ const Signup = () => {
 
     if (validateForm()) {
       // Handle form submission (e.g., send data to backend)
-      console.log("Form data:", formData);
+      // console.log("Form data:", formData);
+      const { confirmPassword, password, username, email } = formData;
+      axios
+        .post("/auth/register", { email, password, userName: username })
+        .then((response) => {
+          if (response.data.message) {
+            toast.success("Success! Your account register successfully.", {
+              // position: toast.POSITION.TOP_RIGHT,
+            });
+            navigate("/login");
+          }
+          // console.log(response.data);
+        })
+        .catch((errors) => {
+          if (errors.response.data.message) {
+            toast.error(errors.response.data.message, {
+              // position: toast.POSITION.TOP_RIGHT,
+            });
+          }
+          // console.log(errors.response.data);
+        });
     }
   };
 
