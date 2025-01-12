@@ -9,7 +9,7 @@ const Signup = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    refCode: "", // Added refCode field
+    refCode: "",
   });
 
   const [errors, setErrors] = useState({
@@ -30,7 +30,6 @@ const Signup = () => {
     let isValid = true;
     let newErrors = {};
 
-    // Basic validation
     if (!formData.username) {
       newErrors.username = "Username is required";
       isValid = false;
@@ -65,80 +64,77 @@ const Signup = () => {
         email,
         password,
         userName: username,
-        ...(refCode && { refCode }), // Include refCode if it's not empty
+        ...(refCode && { refCode }),
       };
 
       axios
         .post("/auth/register", payload)
         .then((response) => {
           if (response.data.message) {
-            toast.success("Success! Your account registered successfully.", {
-              // position: toast.POSITION.TOP_RIGHT,
-            });
+            toast.success("Success! Your account registered successfully.");
             navigate("/login");
           }
         })
         .catch((errors) => {
           if (errors.response.data.message) {
-            toast.error(errors.response.data.message, {
-              // position: toast.POSITION.TOP_RIGHT,
-            });
+            toast.error(errors.response.data.message);
           }
         });
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Signup</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-900">
+      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-3xl font-semibold text-center text-pink-500 mb-6">Signup</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="username" className="block text-sm font-medium text-gray-300">
               Username<span className="text-red-500">*</span>
             </label>
-            <input id="username" type="text" name="username" value={formData.username} onChange={handleChange} className="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input id="username" type="text" name="username" value={formData.username} onChange={handleChange} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
           </div>
 
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300">
               Email<span className="text-red-500">*</span>
             </label>
-            <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} className="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
 
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-300">
               Password<span className="text-red-500">*</span>
             </label>
-            <input id="password" type="password" name="password" value={formData.password} onChange={handleChange} className="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input id="password" type="password" name="password" value={formData.password} onChange={handleChange} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
 
           <div className="mb-4">
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300">
               Confirm Password<span className="text-red-500">*</span>
             </label>
-            <input id="confirmPassword" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input id="confirmPassword" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
           </div>
 
-          {/* New Reference Code Field */}
           <div className="mb-4">
-            <label htmlFor="refCode" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="refCode" className="block text-sm font-medium text-gray-300">
               Reference Code
             </label>
-            <input id="refCode" type="text" name="refCode" value={formData.refCode} onChange={handleChange} className="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input id="refCode" type="text" name="refCode" value={formData.refCode} onChange={handleChange} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
           </div>
 
-          <button type="submit" className="w-full py-3 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <button type="submit" className="w-full py-3 px-4 bg-pink-500 text-white font-semibold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500">
             Sign Up
           </button>
 
-          <div className="text-center mt-4 fs-6">
-            <Link to="/login">Already have your account?</Link>
+          <div className="text-center mt-4 text-sm text-gray-400">
+            <Link to="/login" className="text-pink-500 hover:underline">
+              Already have your account?
+            </Link>
           </div>
         </form>
       </div>

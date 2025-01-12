@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Deposit from "./pages/Deposit";
 import Withdraw from "./pages/Withdraw";
+import ForgotPassword from "./pages/ForgetPassword";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/deposit" element={<Deposit />} />
               <Route path="/withdraw" element={<Withdraw />} />
+              <Route path="/forget-password" element={<ForgotPassword />} />
             </Routes>
           </Layout>
         </PersistGate>
