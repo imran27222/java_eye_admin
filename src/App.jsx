@@ -10,6 +10,9 @@ import Login from "./pages/Login";
 import Deposit from "./pages/Deposit";
 import Withdraw from "./pages/Withdraw";
 import ForgotPassword from "./pages/ForgetPassword";
+import Profile from "./pages/Profile";
+import History from "./pages/History";
+import Assets from "./pages/Assets";
 
 function App() {
   return (
@@ -24,6 +27,9 @@ function App() {
               <Route path="/deposit" element={<Deposit />} />
               <Route path="/withdraw" element={<Withdraw />} />
               <Route path="/forget-password" element={<ForgotPassword />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/history" element={<History />} />
+              <Route path="/assets" element={<Assets />} />
             </Routes>
           </Layout>
         </PersistGate>
