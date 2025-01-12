@@ -9,6 +9,7 @@ const Signup = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    refCode: "", // Added refCode field
   });
 
   const [errors, setErrors] = useState({
@@ -58,19 +59,24 @@ const Signup = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      // Handle form submission (e.g., send data to backend)
-      // console.log("Form data:", formData);
-      const { confirmPassword, password, username, email } = formData;
+      const { confirmPassword, password, username, email, refCode } = formData;
+
+      const payload = {
+        email,
+        password,
+        userName: username,
+        ...(refCode && { refCode }), // Include refCode if it's not empty
+      };
+
       axios
-        .post("/auth/register", { email, password, userName: username })
+        .post("/auth/register", payload)
         .then((response) => {
           if (response.data.message) {
-            toast.success("Success! Your account register successfully.", {
+            toast.success("Success! Your account registered successfully.", {
               // position: toast.POSITION.TOP_RIGHT,
             });
             navigate("/login");
           }
-          // console.log(response.data);
         })
         .catch((errors) => {
           if (errors.response.data.message) {
@@ -78,7 +84,6 @@ const Signup = () => {
               // position: toast.POSITION.TOP_RIGHT,
             });
           }
-          // console.log(errors.response.data);
         });
     }
   };
@@ -90,7 +95,7 @@ const Signup = () => {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-              Username
+              Username<span className="text-red-500">*</span>
             </label>
             <input id="username" type="text" name="username" value={formData.username} onChange={handleChange} className="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
@@ -98,7 +103,7 @@ const Signup = () => {
 
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
+              Email<span className="text-red-500">*</span>
             </label>
             <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} className="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
@@ -106,18 +111,26 @@ const Signup = () => {
 
           <div className="mb-4">
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
+              Password<span className="text-red-500">*</span>
             </label>
             <input id="password" type="password" name="password" value={formData.password} onChange={handleChange} className="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
 
-          <div className="mb-6">
+          <div className="mb-4">
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-              Confirm Password
+              Confirm Password<span className="text-red-500">*</span>
             </label>
             <input id="confirmPassword" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+          </div>
+
+          {/* New Reference Code Field */}
+          <div className="mb-4">
+            <label htmlFor="refCode" className="block text-sm font-medium text-gray-700">
+              Reference Code
+            </label>
+            <input id="refCode" type="text" name="refCode" value={formData.refCode} onChange={handleChange} className="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
 
           <button type="submit" className="w-full py-3 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -125,7 +138,7 @@ const Signup = () => {
           </button>
 
           <div className="text-center mt-4 fs-6">
-            <Link to="/login">Already have your accound?</Link>
+            <Link to="/login">Already have your account?</Link>
           </div>
         </form>
       </div>
