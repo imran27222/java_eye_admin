@@ -21,10 +21,12 @@ const MyAssetsCard = () => {
             <span className="mt-2">Deposit</span>
             {/* </div> */}
           </Link>
-          <div className="flex flex-col items-center">
+          <Link to="/withdraw" className="flex flex-col items-center text-white hover:text-blue-600">
+            {/* <div className="flex flex-col items-center"> */}
             <CurrencyDollarIcon className="h-6 w-6" />
             <span className="mt-2">Withdraw</span>
-          </div>
+            {/* </div> */}
+          </Link>
           <div className="flex flex-col items-center">
             <GiftIcon className="h-6 w-6" />
             <span className="mt-2">Rewards</span>

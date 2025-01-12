@@ -8,6 +8,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Deposit from "./pages/Deposit";
+import Withdraw from "./pages/Withdraw";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
               <Route path="/deposit" element={<Deposit />} />
+              <Route path="/withdraw" element={<Withdraw />} />
             </Routes>
           </Layout>
         </PersistGate>
