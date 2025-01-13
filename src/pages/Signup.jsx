@@ -19,6 +19,8 @@ const Signup = () => {
     confirmPassword: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -56,6 +58,7 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (validateForm()) {
       const { confirmPassword, password, username, email, refCode } = formData;
@@ -81,6 +84,7 @@ const Signup = () => {
           }
         });
     }
+    setIsLoading(false);
   };
 
   return (
@@ -127,7 +131,7 @@ const Signup = () => {
             <input id="refCode" type="text" name="refCode" value={formData.refCode} onChange={handleChange} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
           </div>
 
-          <button type="submit" className="w-full py-3 px-4 bg-pink-500 text-white font-semibold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500">
+          <button type="submit" className="w-full py-3 px-4 bg-pink-500 text-white font-semibold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500" disabled={isLoading}>
             Sign Up
           </button>
 
