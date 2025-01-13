@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import api from "../utils/axios";
 
 const Withdraw = () => {
   const [formData, setFormData] = useState({
@@ -36,31 +37,42 @@ const Withdraw = () => {
     return isValid;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      if (validateForm()) {
+        const { walletAddress, walletType, withdrawAmount } = formData;
 
-    if (validateForm()) {
-      const { walletAddress, walletType, withdrawAmount } = formData;
+        const payload = {
+          wallet_address: walletAddress,
+          wallet_type: walletType,
+          withdraw_amount: parseFloat(withdrawAmount),
+        };
 
-      const payload = {
-        walletAddress,
-        walletType,
-        withdrawAmount: parseFloat(withdrawAmount),
-      };
+        const response = await api.post("/withdraw", payload);
 
-      // Simulate API request with toast
+        if (response.data.message) {
+          // Simulate API request with toast
+          toast.success("Withdrawal request submitted successfully!", {
+            position: "top-right",
+          });
 
-      console.log("Withdraw:", payload);
-      toast.success("Withdrawal request submitted successfully!", {
-        position: "top-right",
-      });
-
-      // Reset form after submission
-      setFormData({
-        walletAddress: "",
-        walletType: "TRC20",
-        withdrawAmount: "",
-      });
+          // Reset form after submission
+          setFormData({
+            walletAddress: "",
+            walletType: "TRC20",
+            withdrawAmount: "",
+          });
+        } else {
+          toast.error("Error submitting withdrawal request.");
+        }
+      }
+    } catch (error) {
+      if (error.response.data.error.message) {
+        toast.error(error.response.data.error.message);
+      } else {
+        toast.error(error.message);
+      }
     }
   };
 

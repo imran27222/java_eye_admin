@@ -1,19 +1,66 @@
 import React, { useState } from "react";
+import api from "../utils/axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const Deposit = () => {
   const [transactionNumber, setTransactionNumber] = useState("");
   const [screenshot, setScreenshot] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  const navigate = useNavigate();
 
   const handleScreenshotUpload = (e) => {
     const file = e.target.files[0];
     setScreenshot(file);
   };
 
-  const handleSubmit = () => {
-    console.log({
-      transactionNumber,
-      screenshot,
-    });
+  const validate = () => {
+    const newErrors = {};
+    if (!transactionNumber.trim()) {
+      newErrors.transactionNumber = "Transaction number is required.";
+    }
+    if (!screenshot) {
+      newErrors.screenshot = "Screenshot is required.";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+
+      if (!validate()) {
+        return;
+      }
+
+      // Create FormData object
+      const formData = new FormData();
+      formData.append("transaction_number", transactionNumber);
+      formData.append("image", screenshot, screenshot.name);
+
+      // Example API call
+      const response = await api.post("/deposit/add", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response.data.message) {
+        toast.success("Form submitted successfully!");
+        setTransactionNumber("");
+        setScreenshot(null);
+        navigate("/");
+      } else {
+        toast.error("Error submitting form.");
+      }
+    } catch (error) {
+      if (error.response.data.error.message) {
+        toast.error(error.response.data.error.message);
+      } else {
+        toast.error(error.message);
+      }
+    }
   };
 
   return (
@@ -44,6 +91,7 @@ const Deposit = () => {
             placeholder="Please enter your transaction number"
             className="w-full bg-gray-800 text-gray-300 p-3 rounded-md border border-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
           />
+          {errors.transactionNumber && <span style={{ color: "red" }}>{errors.transactionNumber}</span>}
         </div>
         <div className="mb-6">
           <label htmlFor="screenshot" className="block text-gray-300 font-medium mb-1">
@@ -51,7 +99,12 @@ const Deposit = () => {
           </label>
           <div className="border border-gray-700 bg-gray-800 p-6 rounded-md flex flex-col items-center justify-center">
             {screenshot ? (
-              <p className="text-gray-300 text-sm">{screenshot.name}</p>
+              <div className="flex flex-col items-center">
+                <p className="text-gray-300 text-sm mb-2">{screenshot.name}</p>
+                <button type="button" onClick={() => setScreenshot(null)} className="text-sm text-red-500 hover:underline">
+                  Remove
+                </button>
+              </div>
             ) : (
               <label className="cursor-pointer">
                 <input id="screenshot" type="file" accept="image/*" onChange={handleScreenshotUpload} className="hidden" />
@@ -64,7 +117,9 @@ const Deposit = () => {
               </label>
             )}
           </div>
+          {errors.screenshot && <span style={{ color: "red" }}>{errors.screenshot}</span>}
         </div>
+
         <button onClick={handleSubmit} className="w-full bg-pink-500 text-white py-3 rounded-md font-semibold hover:bg-pink-600 transition">
           OK to Recharge
         </button>
