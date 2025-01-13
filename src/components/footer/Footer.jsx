@@ -9,9 +9,9 @@ const Footer = () => {
         <Link to="/" className="text-white hover:text-gray-300  hover:border-gray-300">
           <button className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-md transition">Home</button>
         </Link>
-        <Link to="/assets" className="text-white hover:text-gray-300  hover:border-gray-300">
+        {/* <Link to="/assets" className="text-white hover:text-gray-300  hover:border-gray-300">
           <button className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-md transition">Assets</button>
-        </Link>
+        </Link> */}
         <Link to="/history" className="text-white hover:text-gray-300  hover:border-gray-300">
           <button className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-md transition">History</button>
         </Link>
