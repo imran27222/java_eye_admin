@@ -11,7 +11,7 @@ const Home = () => {
       <HeroBanner />
       <MyAssetsCard />
       <TextBanner />
-      <BuyAndSell />
+      {/* <BuyAndSell /> */}
       <FeatureNFT />
     </div>
   );

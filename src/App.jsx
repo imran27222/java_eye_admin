@@ -8,6 +8,15 @@ import { PersistGate } from "redux-persist/integration/react";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Deposit from "./pages/Deposit";
+import Withdraw from "./pages/Withdraw";
+import ForgotPassword from "./pages/ForgetPassword";
+import Profile from "./pages/Profile";
+import History from "./pages/History";
+import Assets from "./pages/Assets";
+import ChangePassword from "./pages/ChangePassword";
+import AboutUs from "./pages/AboutUs";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermOfService";
 
 function App() {
   return (
@@ -20,6 +29,15 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
               <Route path="/deposit" element={<Deposit />} />
+              <Route path="/withdraw" element={<Withdraw />} />
+              <Route path="/forget-password" element={<ForgotPassword />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/history" element={<History />} />
+              {/* <Route path="/assets" element={<Assets />} /> */}
+              <Route path="/change-password" element={<ChangePassword />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
             </Routes>
           </Layout>
         </PersistGate>

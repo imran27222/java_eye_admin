@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { signin } from "../store/user/userSlice";
+import withoutAuth from "../components/hoc/withoutAuth";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -44,44 +46,65 @@ const Login = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      // Handle form submission (e.g., send data to backend)
-      // console.log("Form data:", formData);
-
-      // Dispatch the thunk
       dispatch(signin(formData)).then((unwrapResult) => {
-        if (unwrapResult.payload) {
+        if (unwrapResult.type === "user/signin/fulfilled") {
+          toast.success("Login successful!");
           navigate("/");
+        } else {
+          toast.error(unwrapResult.payload);
         }
       });
     }
   };
 
+  // if (token) {
+  //   return (
+  //     <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+  //       <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+  //         <h2 className="text-3xl font-semibold text-center text-pink-500 mb-6">You are already logged in</h2>
+  //         <div className="text-center mt-4 text-sm text-gray-400">
+  //           <Link to="/" className="text-pink-500 hover:underline">
+  //             Go to Home
+  //           </Link>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Login</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-900">
+      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-3xl font-semibold text-center text-pink-500 mb-6">Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
               Email
             </label>
-            <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} className="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
 
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
               Password
             </label>
-            <input id="password" type="password" name="password" value={formData.password} onChange={handleChange} className="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input id="password" type="password" name="password" value={formData.password} onChange={handleChange} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
 
-          <button type="submit" className="w-full py-3 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <button type="submit" className="w-full py-3 px-4 bg-pink-500 text-white font-semibold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500">
             Login
           </button>
-          <div className="text-center mt-4 fs-6">
-            <Link to="/signup">Create your own account.</Link>
+          <div className="text-center mt-4 text-sm text-gray-400">
+            <Link to="/signup" className="text-pink-500 hover:underline">
+              Create your own account.
+            </Link>
+          </div>
+          <div className="text-center mt-2 text-sm text-gray-400">
+            <Link to="/forget-password" className="text-pink-500 hover:underline">
+              Forget Your Password?
+            </Link>
           </div>
         </form>
       </div>
@@ -89,4 +112,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withoutAuth(Login);
