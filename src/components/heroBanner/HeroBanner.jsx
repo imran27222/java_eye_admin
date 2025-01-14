@@ -9,17 +9,17 @@ const cards = [
   {
     id: 1,
     image: slider1, // Replace with your image path
-    title: "NFT Spotlight #1",
+    title: "GFT Spotlight #1",
   },
   {
     id: 2,
     image: slider2, // Replace with your image path
-    title: "NFT Spotlight #2",
+    title: "GFT Spotlight #2",
   },
   {
     id: 3,
     image: slider3, // Replace with your image path
-    title: "NFT Spotlight #3",
+    title: "GFT Spotlight #3",
   },
 ];
 
