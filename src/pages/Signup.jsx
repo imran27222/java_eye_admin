@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import axios from "../utils/axios";
 import { toast } from "react-toastify";
+import withoutAuth from "../components/hoc/withoutAuth";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -146,4 +147,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default withoutAuth(Signup);

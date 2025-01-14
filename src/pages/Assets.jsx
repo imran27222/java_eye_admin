@@ -1,4 +1,5 @@
 import React from "react";
+import withAuth from "../components/hoc/withAuth";
 
 const Assets = () => {
   const levels = [
@@ -54,4 +55,4 @@ const Assets = () => {
   );
 };
 
-export default Assets;
+export default withAuth(Assets);

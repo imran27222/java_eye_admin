@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import api from "../utils/axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
+import withAuth from "../components/hoc/withAuth";
 
 const Deposit = () => {
   const [transactionNumber, setTransactionNumber] = useState("");
@@ -128,4 +129,4 @@ const Deposit = () => {
   );
 };
 
-export default Deposit;
+export default withAuth(Deposit);

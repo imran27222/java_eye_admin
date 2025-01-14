@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { signin } from "../store/user/userSlice";
+import withoutAuth from "../components/hoc/withoutAuth";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -45,12 +47,30 @@ const Login = () => {
 
     if (validateForm()) {
       dispatch(signin(formData)).then((unwrapResult) => {
-        if (unwrapResult.payload) {
+        if (unwrapResult.type === "user/signin/fulfilled") {
+          toast.success("Login successful!");
           navigate("/");
+        } else {
+          toast.error(unwrapResult.payload);
         }
       });
     }
   };
+
+  // if (token) {
+  //   return (
+  //     <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+  //       <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+  //         <h2 className="text-3xl font-semibold text-center text-pink-500 mb-6">You are already logged in</h2>
+  //         <div className="text-center mt-4 text-sm text-gray-400">
+  //           <Link to="/" className="text-pink-500 hover:underline">
+  //             Go to Home
+  //           </Link>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
@@ -92,4 +112,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withoutAuth(Login);

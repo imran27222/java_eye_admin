@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import API from "../utils/axios";
 import { formatDate } from "../utils/dateFormat";
+import withAuth from "../components/hoc/withAuth";
 
 const History = () => {
   const [activeTab, setActiveTab] = useState("deposit");
@@ -103,4 +104,4 @@ const History = () => {
   );
 };
 
-export default History;
+export default withAuth(History);

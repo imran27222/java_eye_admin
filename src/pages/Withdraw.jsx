@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import api from "../utils/axios";
+import withAuth from "../components/hoc/withAuth";
 
 const Withdraw = () => {
   const [formData, setFormData] = useState({
@@ -146,4 +147,4 @@ const Withdraw = () => {
   );
 };
 
-export default Withdraw;
+export default withAuth(Withdraw);

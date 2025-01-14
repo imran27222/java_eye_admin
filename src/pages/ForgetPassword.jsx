@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
+import withoutAuth from "../components/hoc/withoutAuth";
 
 const ForgotPassword = () => {
   const [formData, setFormData] = useState({
@@ -63,4 +64,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default withoutAuth(ForgotPassword);

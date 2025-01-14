@@ -5,7 +5,8 @@ import { Link } from "react-router";
 const MyAssetsCard = () => {
   return (
     <div className="bg-black p-4">
-      <div className="bg-gray-900 p-6 rounded-lg shadow-lg flex flex-col md:flex-row justify-between items-center text-white">
+      {/* <div className="bg-gray-900 p-6 rounded-lg shadow-lg flex flex-col md:flex-row justify-between items-center text-white"> */}
+      <div className="bg-gray-900 p-6 rounded-lg shadow-lg flex flex-col gap-4 justify-between items-center text-white">
         {/* Left Section */}
         <div className="mb-4 md:mb-0">
           <h2 className="text-lg font-semibold">
@@ -38,9 +39,9 @@ const MyAssetsCard = () => {
         </div>
 
         {/* Right Section */}
-        <div>
+        {/* <div>
           <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">Add Funds</button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
