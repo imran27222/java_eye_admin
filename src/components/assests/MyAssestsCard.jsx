@@ -1,8 +1,10 @@
 import React from "react";
 import { CreditCardIcon, CurrencyDollarIcon, GiftIcon, ShareIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router";
+import { useSelector } from "react-redux";
 
 const MyAssetsCard = () => {
+  const { user } = useSelector((state) => state.user);
   return (
     <div className="bg-black p-4">
       {/* <div className="bg-gray-900 p-6 rounded-lg shadow-lg flex flex-col md:flex-row justify-between items-center text-white"> */}
@@ -10,7 +12,7 @@ const MyAssetsCard = () => {
         {/* Left Section */}
         <div className="mb-4 md:mb-0">
           <h2 className="text-lg font-semibold">
-            My Assets: <span className="font-bold text-yellow-500">0 USDT</span>
+            My Assets: <span className="font-bold text-yellow-500">{user ? `${user.current_balance} USDT` : "Not logged In yet!"}</span>
           </h2>
         </div>
 
