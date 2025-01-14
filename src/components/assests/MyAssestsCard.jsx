@@ -17,27 +17,23 @@ const MyAssetsCard = () => {
         </div>
 
         {/* Center Section */}
-        <div className="flex flex-col md:flex-row justify-center gap-6 text-center pb-4 md:pb-0">
+        <div className="flex flex-row justify-center gap-6 text-center pb-4 md:pb-0">
           <Link to="/deposit" className="flex flex-col items-center text-white hover:text-blue-600">
-            {/* <div className="flex flex-col items-center"> */}
-            <CreditCardIcon className="h-6 w-6" />
-            <span className="mt-2">Deposit</span>
-            {/* </div> */}
+            <CreditCardIcon className="h-5 w-5 md:h-6 md:w-6" />
+            <span className="mt-1 md:mt-2 text-xs md:text-sm">Deposit</span>
           </Link>
           <Link to="/withdraw" className="flex flex-col items-center text-white hover:text-blue-600">
-            {/* <div className="flex flex-col items-center"> */}
-            <CurrencyDollarIcon className="h-6 w-6" />
-            <span className="mt-2">Withdraw</span>
-            {/* </div> */}
+            <CurrencyDollarIcon className="h-5 w-5 md:h-6 md:w-6" />
+            <span className="mt-1 md:mt-2 text-xs md:text-sm">Withdraw</span>
           </Link>
-          <div className="flex flex-col items-center">
-            <GiftIcon className="h-6 w-6" />
-            <span className="mt-2">Rewards</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <ShareIcon className="h-6 w-6" />
-            <span className="mt-2">Referral</span>
-          </div>
+          <Link to={"/rewards"} className="flex flex-col items-center text-white hover:text-blue-600">
+            <GiftIcon className="h-5 w-5 md:h-6 md:w-6" />
+            <span className="mt-1 md:mt-2 text-xs md:text-sm">Rewards</span>
+          </Link>
+          <Link to={"/referral"} className="flex flex-col items-center text-white hover:text-blue-600">
+            <ShareIcon className="h-5 w-5 md:h-6 md:w-6" />
+            <span className="mt-1 md:mt-2 text-xs md:text-sm">Referral</span>
+          </Link>
         </div>
 
         {/* Right Section */}

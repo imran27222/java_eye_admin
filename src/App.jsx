@@ -17,6 +17,8 @@ import ChangePassword from "./pages/ChangePassword";
 import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermOfService";
+import Referral from "./pages/Referral";
+import Rewards from "./pages/Rewards";
 
 function App() {
   return (
@@ -38,6 +40,8 @@ function App() {
               <Route path="/about" element={<AboutUs />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/referral" element={<Referral />} />
+              <Route path="/rewards" element={<Rewards />} />
             </Routes>
           </Layout>
         </PersistGate>

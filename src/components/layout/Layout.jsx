@@ -2,10 +2,12 @@ import React from "react";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { ToastContainer } from "react-toastify";
+import TopBanner from "../topBanner/TopBanner";
 
 const Layout = ({ children }) => {
   return (
     <>
+      <TopBanner />
       <Header />
       <main>{children}</main>
       <Footer />

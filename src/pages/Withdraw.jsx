@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import api from "../utils/axios";
 import withAuth from "../components/hoc/withAuth";
+import { useNavigate } from "react-router";
 
 const Withdraw = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,8 @@ const Withdraw = () => {
     walletAddress: "",
     withdrawAmount: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,6 +60,7 @@ const Withdraw = () => {
           toast.success("Withdrawal request submitted successfully!", {
             position: "top-right",
           });
+          navigate("/");
 
           // Reset form after submission
           setFormData({
@@ -69,8 +73,8 @@ const Withdraw = () => {
         }
       }
     } catch (error) {
-      if (error.response.data.error.message) {
-        toast.error(error.response.data.error.message);
+      if (error.response.data.message) {
+        toast.error(error.response.data.message);
       } else {
         toast.error(error.message);
       }
