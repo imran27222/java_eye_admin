@@ -39,7 +39,7 @@ const nfts = [
 const FeatureNFT = () => {
   return (
     <div className="p-4">
-      <p className="text-2xl text-center font-bold pb-4">Our Featured NFTs</p>
+      <p className="text-2xl text-center font-bold pb-4">Our Featured GFTs</p>
       <div className="flex flex-wrap gap-4 justify-center">
         {nfts.map((nft, index) => (
           <ProductCard key={index} {...nft} />
