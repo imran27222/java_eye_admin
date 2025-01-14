@@ -30,7 +30,7 @@ const MyAssetsCard = () => {
             <GiftIcon className="h-5 w-5 md:h-6 md:w-6" />
             <span className="mt-1 md:mt-2 text-xs md:text-sm">Rewards</span>
           </Link>
-          <Link to={"/refferal"} className="flex flex-col items-center text-white hover:text-blue-600">
+          <Link to={"/referral"} className="flex flex-col items-center text-white hover:text-blue-600">
             <ShareIcon className="h-5 w-5 md:h-6 md:w-6" />
             <span className="mt-1 md:mt-2 text-xs md:text-sm">Referral</span>
           </Link>

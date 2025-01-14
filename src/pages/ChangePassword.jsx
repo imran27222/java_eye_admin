@@ -57,12 +57,12 @@ const ChangePassword = () => {
       const { currentPassword, newPassword } = formData;
 
       const payload = {
-        currentPassword,
-        newPassword,
+        current_password: currentPassword,
+        new_password: newPassword,
       };
 
       axios
-        .post("/auth/change-password", payload)
+        .put("/auth", payload)
         .then((response) => {
           if (response.data.message) {
             toast.success("Password changed successfully.");
@@ -122,4 +122,4 @@ const ChangePassword = () => {
   );
 };
 
-export default withAuth(ChangePassword);
+export default withAuth(ChangePassword, true);
