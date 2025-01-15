@@ -19,12 +19,14 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermOfService";
 import Referral from "./pages/Referral";
 import Rewards from "./pages/Rewards";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
+          <ScrollToTop />
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
