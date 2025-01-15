@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import withoutAuth from "../components/hoc/withoutAuth";
+import api from "../utils/axios";
+import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
   });
@@ -30,10 +33,22 @@ const ForgotPassword = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    if (validateForm()) {
-      console.log("Forget Password:", formData);
+      if (validateForm()) {
+        const response = await api.post("/auth/forget-password", formData);
+        if (response) {
+          navigate("/login");
+          toast.success("Reset link sent to your email address");
+        }
+      }
+    } catch (err) {
+      if (err.response.data.messsage) {
+        toast.error(err.response.data.message);
+      } else {
+        toast.error("Something went wrong, Please try again later");
+      }
     }
   };
 
