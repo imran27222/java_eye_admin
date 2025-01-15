@@ -1,20 +1,24 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-// import { setLastPurchase } from "../store/user/userSlice";
+import api from "../utils/axios";
 
 const usePurchaseAuth = () => {
   const { user, lastPurchase } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const canPurchase = () => {
+  const canPurchase = (price) => {
     if (!user) {
       navigate("/login");
       return false;
     }
     if (!user.is_verified) {
       toast.warn("Please verify your email first!");
+      return false;
+    }
+    if (user.current_balance < price) {
+      toast.warn("Current Credit is Lower then Product Price!");
       return false;
     }
     if (lastPurchase) {
@@ -29,12 +33,23 @@ const usePurchaseAuth = () => {
   };
 
   const makePurchase = async (product) => {
-    if (canPurchase()) {
-      // Make the purchase call here
+    if (canPurchase(product.product_price)) {
+      try {
+        const { setLastPurchase } = await import("../store/user/userSlice"); // Import the logout action
+        // Make the purchase call here
 
-      const { setLastPurchase } = await import("../store/user/userSlice"); // Import the logout action
-      dispatch(setLastPurchase({ ...product, created_at: new Date().toISOString() })); // Change product to the actual purchase data
-      toast.success("Purchase successful!");
+        const response = await api.post("/products/buy", product);
+        if (response) {
+          dispatch(setLastPurchase(response.data.product));
+          toast.success("Purchase successful!");
+        }
+      } catch (error) {
+        if (error.response.data.message) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error(error);
+        }
+      }
     }
   };
 

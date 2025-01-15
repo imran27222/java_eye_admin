@@ -24,7 +24,7 @@ const ProductCard = ({ id, title, price, image }) => {
       </div>
 
       {/* Button Section */}
-      <button onClick={() => makePurchase({ id, title, price })} className="w-full text-white bg-green-500 font-semibold uppercase hover:bg-green-600 transition duration-300 rounded-t-none">
+      <button onClick={() => makePurchase({ product_id: id, product_name: title, product_price: price })} className="w-full text-white bg-green-500 font-semibold uppercase hover:bg-green-600 transition duration-300 rounded-t-none">
         Buy
       </button>
     </div>

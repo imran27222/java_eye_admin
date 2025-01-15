@@ -3,11 +3,13 @@ import api from "../utils/axios";
 import withAuth from "../components/hoc/withAuth";
 import { Link } from "react-router";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { user } = useSelector((state) => state.user);
+  // const emailSent = useSelector((state) => state.actions.emailSent);
 
   useEffect(() => {
     // Fetch profile data from API
@@ -28,6 +30,19 @@ const ProfilePage = () => {
 
     fetchProfileData();
   }, []);
+
+  const resendEmail = async () => {
+    try {
+      const response = await api.post("/auth/send-verify-email", {
+        email: profileData.email,
+      });
+      if (response) {
+        toast.success("Email sent successfully");
+      }
+    } catch (error) {
+      toast.error("Email failed to send!");
+    }
+  };
 
   if (loading) {
     return (
@@ -62,7 +77,11 @@ const ProfilePage = () => {
             </p>
             <p className="text-gray-300 gap-2 flex items-center ">
               <span className="font-medium text-pink-500">Email:</span> {profileData.email}
-              {!user.is_verified && <span className="cursor-pointer inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">Resend</span>}
+              {!user.is_verified && (
+                <span onClick={resendEmail} className="cursor-pointer inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                  Resend
+                </span>
+              )}
             </p>
           </div>
         </div>

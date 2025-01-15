@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // Defaults to localStorage
 import userReducer from "./user/userSlice"; // Ensure the correct path to the userReducer
+import actionReducer from "./actions/actionSlice"; // Ensure the correct path to the userReducer
 
 // Persist Configuration
 const persistConfig = {
@@ -14,6 +15,7 @@ const persistConfig = {
 // Combine All Reducers
 const rootReducer = combineReducers({
   user: userReducer, // Ensure userReducer is properly imported
+  actions: actionReducer, // Ensure actionsReducer is properly imported
   // Add more reducers here as you create them, e.g.:
   // product: productReducer,
 });
