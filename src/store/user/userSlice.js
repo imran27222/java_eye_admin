@@ -21,6 +21,14 @@ const userSlice = createSlice({
     error: null, // Stores error messages from the API call
   },
   reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.error = null;
+      if (action.payload.lastPurchase) {
+        state.lastPurchase = action.payload.lastPurchase;
+      }
+    },
     logout: (state) => {
       state.user = null;
       state.token = null;
@@ -43,7 +51,9 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user; // Assume API returns a `user` object
         state.token = action.payload.token; // Assume API returns a `token`
-        state.lastPurchase = action.payload.lastPurchase; // Assume API returns a `lastPurchase`
+        if (action.payload.lastPurchase) {
+          state.lastPurchase = action.payload.lastPurchase; // Assume API returns a `lastPurchase`
+        }
       })
       // Rejected state for a failed API call
       .addCase(signin.rejected, (state, action) => {
@@ -53,5 +63,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout, setLastPurchase } = userSlice.actions;
+export const { setUser, logout, setLastPurchase } = userSlice.actions;
 export default userSlice.reducer;
