@@ -2,7 +2,7 @@ import { WalletIcon } from "@heroicons/react/24/solid";
 
 const ProductCard = ({ title, price, image }) => {
   return (
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden w-32 sm:w-64 flex-shrink-0">
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden w-[47%] sm:w-64 flex-shrink-0">
       {/* Image Section */}
       <img
         src={image} // Replace with your actual image URL
