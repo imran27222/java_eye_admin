@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import axios from "../utils/axios";
 import { toast } from "react-toastify";
 import withoutAuth from "../components/hoc/withoutAuth";
 
 const Signup = () => {
+  const [searchParams] = useSearchParams();
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -28,6 +30,13 @@ const Signup = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  useEffect(() => {
+    const code = searchParams.get("code");
+    if (code) {
+      setFormData((prev) => ({ ...prev, refCode: code }));
+    }
+  }, [searchParams]);
 
   const validateForm = () => {
     let isValid = true;
