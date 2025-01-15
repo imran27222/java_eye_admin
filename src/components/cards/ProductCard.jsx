@@ -1,6 +1,8 @@
 import { WalletIcon } from "@heroicons/react/24/solid";
+import usePurchaseAuth from "../../hooks/usePurchaseAuth";
 
-const ProductCard = ({ title, price, image }) => {
+const ProductCard = ({ id, title, price, image }) => {
+  const { makePurchase } = usePurchaseAuth();
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden w-[47%] sm:w-64 flex-shrink-0">
       {/* Image Section */}
@@ -22,7 +24,9 @@ const ProductCard = ({ title, price, image }) => {
       </div>
 
       {/* Button Section */}
-      <button className="w-full text-white bg-green-500 font-semibold uppercase hover:bg-green-600 transition duration-300 rounded-t-none">Buy</button>
+      <button onClick={() => makePurchase({ id, title, price })} className="w-full text-white bg-green-500 font-semibold uppercase hover:bg-green-600 transition duration-300 rounded-t-none">
+        Buy
+      </button>
     </div>
   );
 };

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import api from "../utils/axios";
 import withAuth from "../components/hoc/withAuth";
 import { Link } from "react-router";
+import { useSelector } from "react-redux";
 
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
     // Fetch profile data from API
@@ -58,8 +60,9 @@ const ProfilePage = () => {
             <p className="text-gray-300 mb-2">
               <span className="font-medium text-pink-500">Username:</span> {profileData.userName}
             </p>
-            <p className="text-gray-300">
+            <p className="text-gray-300 gap-2 flex items-center ">
               <span className="font-medium text-pink-500">Email:</span> {profileData.email}
+              {!user.is_verified && <span className="cursor-pointer inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">Resend</span>}
             </p>
           </div>
         </div>
