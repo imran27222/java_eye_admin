@@ -6,7 +6,7 @@ const TopBanner = () => {
   const [isVisible, setIsVisible] = useState(true);
   const { user } = useSelector((state) => state.user);
 
-  if (!isVisible || !user || user.emailVerified) {
+  if (!isVisible || !user || user.is_verified) {
     return null; // Don't display if hidden or email is verified
   }
 
