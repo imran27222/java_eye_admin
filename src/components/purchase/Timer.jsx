@@ -4,17 +4,28 @@ import { useState, useEffect } from "react";
 const Timer = () => {
   const lastPurchase = useSelector((state) => state.user.lastPurchase);
   const [remainingTime, setRemainingTime] = useState(0);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (lastPurchase) {
+      setShow(true);
       const interval = setInterval(() => {
         const now = Date.now();
         const lastPurchaseTime = new Date(lastPurchase.created_at);
         const timeLeft = 24 * 60 * 60 * 1000 - (now - lastPurchaseTime);
-        setRemainingTime(Math.max(timeLeft, 0));
+        if (timeLeft > 0) {
+          setRemainingTime(Math.max(timeLeft, 0));
+        } else {
+          setShow(false);
+        }
       }, 1000);
 
-      return () => clearInterval(interval);
+      return () => {
+        clearInterval(interval);
+        setShow(false);
+      };
+    } else {
+      setShow(false);
     }
   }, [lastPurchase]);
 
@@ -25,7 +36,7 @@ const Timer = () => {
     return { hours, minutes, seconds };
   };
 
-  if (!lastPurchase) {
+  if (!(lastPurchase && show)) {
     return null;
   }
 
