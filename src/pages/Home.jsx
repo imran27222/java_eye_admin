@@ -10,22 +10,22 @@ import api from "../utils/axios";
 import { useDispatch } from "react-redux";
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const getUser = async (token) => {
-    const { setUser } = await import("../store/user/userSlice");
-    const header = {
-      "x-auth-token": token,
-    };
-    const response = await api.get("/auth/by-accesstoken", { headers: header });
-    dispatch(setUser(response.data));
-  };
-  useEffect(() => {
-    const token = searchParams.get("token");
-    if (token) {
-      getUser(token);
-    }
-  }, [searchParams]);
+  // const dispatch = useDispatch();
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const getUser = async (token) => {
+  //   const { setUser } = await import("../store/user/userSlice");
+  //   const header = {
+  //     "x-auth-token": token,
+  //   };
+  //   const response = await api.get("/auth/by-accesstoken", { headers: header });
+  //   dispatch(setUser(response.data));
+  // };
+  // useEffect(() => {
+  //   const token = searchParams.get("token");
+  //   if (token) {
+  //     getUser(token);
+  //   }
+  // }, [searchParams]);
 
   return (
     <div>
