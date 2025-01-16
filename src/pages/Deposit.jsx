@@ -3,6 +3,7 @@ import api from "../utils/axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import withAuth from "../components/hoc/withAuth";
+import { QRCodeCanvas } from "qrcode.react";
 
 const Deposit = () => {
   const [transactionNumber, setTransactionNumber] = useState("");
@@ -78,7 +79,7 @@ const Deposit = () => {
           </button>
         </div>
         <div className="flex justify-center mb-6">
-          <img src="https://via.placeholder.com/150" alt="QR Code" className="w-32 h-32" />
+          <QRCodeCanvas value={"TAVsDZyEZiibcU8xz4wb4JHt3S9bCoKa3x"} size={128} bgColor="#1f2937" fgColor="#f43f5e" />
         </div>
         <div className="mb-4">
           <label htmlFor="transactionNumber" className="block text-gray-300 font-medium mb-1">
