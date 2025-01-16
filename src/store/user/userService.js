@@ -13,7 +13,7 @@ export const loginUser = async (credentials) => {
     }
   }
 };
-export const fetchUser = async () => {
+export const fetchUserService = async () => {
   try {
     const response = await api.get("/auth/by-accesstoken");
     return response.data; // Axios automatically parses the JSON response
