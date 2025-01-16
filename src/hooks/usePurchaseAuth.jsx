@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../utils/axios";
+import { fetchUser } from "../store/user/userSlice";
 
 const usePurchaseAuth = () => {
   const { user, lastPurchase } = useSelector((state) => state.user);
@@ -41,6 +42,7 @@ const usePurchaseAuth = () => {
         const response = await api.post("/products/buy", product);
         if (response) {
           dispatch(setLastPurchase(response.data.product));
+          dispatch(fetchUser());
           toast.success("Purchase successful!");
         }
       } catch (error) {

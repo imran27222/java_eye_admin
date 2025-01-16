@@ -1,10 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUser } from "./userService"; // Import the service function
+import { fetchUserService, loginUser } from "./userService"; // Import the service function
 
 // Async Thunk for Sign-In
 export const signin = createAsyncThunk("user/signin", async (credentials, { rejectWithValue }) => {
   try {
     const data = await loginUser(credentials); // Call the login service
+    return data; // Assume the API returns a user object and token
+  } catch (error) {
+    return rejectWithValue(error.message); // Pass the error message to Redux state
+  }
+});
+export const fetchUser = createAsyncThunk("user/fetchuser", async (_, { rejectWithValue }) => {
+  try {
+    const data = await fetchUserService(); // Call the login service
     return data; // Assume the API returns a user object and token
   } catch (error) {
     return rejectWithValue(error.message); // Pass the error message to Redux state
@@ -25,9 +33,7 @@ const userSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.error = null;
-      if (action.payload.lastPurchase) {
-        state.lastPurchase = action.payload.lastPurchase;
-      }
+      state.lastPurchase = action.payload.lastPurchase;
     },
     logout: (state) => {
       state.user = null;
@@ -51,14 +57,26 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user; // Assume API returns a `user` object
         state.token = action.payload.token; // Assume API returns a `token`
-        if (action.payload.lastPurchase) {
-          state.lastPurchase = action.payload.lastPurchase; // Assume API returns a `lastPurchase`
-        }
+        state.lastPurchase = action.payload.lastPurchase; // Assume API returns a `lastPurchase`
       })
       // Rejected state for a failed API call
       .addCase(signin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something went wrong";
+      })
+      .addCase(fetchUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Something went wrong";
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user; // Assume API returns a `user` object
+        state.token = action.payload.token; // Assume API returns a `token`
+        state.lastPurchase = action.payload.lastPurchase; // Assume API returns a `lastPurchase`
+      })
+      .addCase(fetchUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       });
   },
 });
