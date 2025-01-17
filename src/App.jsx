@@ -20,6 +20,7 @@ import TermsOfService from "./pages/TermOfService";
 import Referral from "./pages/Referral";
 import Rewards from "./pages/Rewards";
 import ScrollToTop from "./components/ScrollToTop";
+import BuyNFT from "./pages/BuyNFT";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
               <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/referral" element={<Referral />} />
               <Route path="/rewards" element={<Rewards />} />
+              <Route path="/buy" element={<BuyNFT />} />
             </Routes>
           </Layout>
         </PersistGate>
