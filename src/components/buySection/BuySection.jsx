@@ -11,8 +11,13 @@ function BuySection() {
   const handleAmountChange = (e) => setSelectedAmount(Number(e.target.value));
 
   const handleBuyNow = () => {
-    // alert(`NFT #${nftNumber} purchased for ${selectedAmount} USDT!`); // change in toast
     const selectedNfts = findExactNfts(nfts, selectedAmount);
+    const purchase_amount = selectedNfts.reduce((acc, item) => {
+      acc += item.price;
+      return acc;
+    }, 0);
+
+    console.log("Purchase Payload: ", { items: selectedNfts, purchase_amount });
   };
 
   if (lastPurchase) {
