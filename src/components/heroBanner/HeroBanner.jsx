@@ -33,7 +33,7 @@ const HeroBanner = () => {
     slidesToShow: 2,
     slidesToScroll: 2,
     autoplay: true,
-    autoplaySpeed: 15000, // 15 seconds
+    autoplaySpeed: 2000, // 15 seconds
     arrows: false,
     responsive: [
       {
