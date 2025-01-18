@@ -1,23 +1,61 @@
 import React, { useEffect, useState } from "react";
 import { findExactNfts } from "../../utils/findNFTs";
 import nfts from "../../data/nfts";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import api from "../../utils/axios";
+import { toast } from "react-toastify";
+import usePurchaseAuth from "../../hooks/usePurchaseAuth";
 
 function BuySection() {
   const { lastPurchase } = useSelector((store) => store.user);
+  const { makePurchase } = usePurchaseAuth();
+  const dispatch = useDispatch();
 
   const [selectedAmount, setSelectedAmount] = useState(0);
 
   const handleAmountChange = (e) => setSelectedAmount(Number(e.target.value));
 
-  const handleBuyNow = () => {
-    const selectedNfts = findExactNfts(nfts, selectedAmount);
-    const purchase_amount = selectedNfts.reduce((acc, item) => {
-      acc += item.price;
-      return acc;
-    }, 0);
+  const buyCall = async (payload) => {
+    try {
+      const { setLastPurchase } = await import("../../store/user/userSlice"); // Import the logout action
+      const response = await api.post("/purchase/buy", payload);
+      if (response) {
+        // work here
+        dispatch(setLastPurchase(response.data.product));
+        dispatch(fetchUser());
+        toast.success("Purchase successful!");
+      }
+    } catch (error) {
+      if (error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+    }
+  };
 
-    console.log("Purchase Payload: ", { items: selectedNfts, purchase_amount });
+  const handleBuyNow = async () => {
+    try {
+      const selectedNfts = findExactNfts(nfts, selectedAmount);
+      const purchase_amount = selectedNfts.reduce((acc, item) => {
+        acc += item.price;
+        return acc;
+      }, 0);
+
+      console.log("Purchase Payload: ", { items: selectedNfts, purchase_amount });
+      makePurchase({
+        cb: () => {
+          buyCall({ items: selectedNfts, purchase_amount });
+        },
+        amount: purchase_amount,
+      });
+    } catch (error) {
+      if (error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+    }
   };
 
   if (lastPurchase) {
