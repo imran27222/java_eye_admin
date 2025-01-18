@@ -1,12 +1,11 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import api from "../utils/axios";
-import { fetchUser } from "../store/user/userSlice";
+import { BUY_TIME } from "../utils/timeLimit";
+import { formatMilliseconds } from "../utils/formatMilisecond";
 
 const usePurchaseAuth = () => {
   const { user, lastPurchase } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const canPurchase = (price) => {
@@ -25,8 +24,8 @@ const usePurchaseAuth = () => {
     if (lastPurchase) {
       const lastPurchaseTime = new Date(lastPurchase.created_at);
       const now = Date.now();
-      if (now - lastPurchaseTime < 24 * 60 * 60 * 1000) {
-        toast.warn("You can only purchase once every 24 hours!");
+      if (now - lastPurchaseTime < BUY_TIME) {
+        toast.warn(`You can only purchase once every ${formatMilliseconds(BUY_TIME)}!`);
         return false;
       }
     }

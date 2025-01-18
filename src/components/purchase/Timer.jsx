@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
+import { BUY_TIME } from "../../utils/timeLimit";
 
 const Timer = () => {
   const lastPurchase = useSelector((state) => state.user.lastPurchase);
@@ -12,7 +13,7 @@ const Timer = () => {
       const interval = setInterval(() => {
         const now = Date.now();
         const lastPurchaseTime = new Date(lastPurchase.created_at);
-        const timeLeft = 24 * 60 * 60 * 1000 - (now - lastPurchaseTime);
+        const timeLeft = BUY_TIME - (now - lastPurchaseTime);
         if (timeLeft > 0) {
           setRemainingTime(Math.max(timeLeft, 0));
         } else {
