@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // Defaults to localStorage
 import userReducer from "./user/userSlice"; // Ensure the correct path to the userReducer
 import actionReducer from "./actions/actionSlice"; // Ensure the correct path to the userReducer
-import adminReducer from "./actions/adminSlice"; // Ensure the correct path to the userReducer
+import adminReducer from "./admin/adminSlice"; // Ensure the correct path to the userReducer
 
 // Persist Configuration
 const persistConfig = {

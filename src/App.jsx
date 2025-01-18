@@ -21,6 +21,8 @@ import Referral from "./pages/Referral";
 import Rewards from "./pages/Rewards";
 import ScrollToTop from "./components/ScrollToTop";
 import BuyNFT from "./pages/BuyNFT";
+import Routing from "./admin/pages/Routing";
+import NotFoundPage from "./pages/NotFound";
 
 function App() {
   return (
@@ -28,26 +30,35 @@ function App() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <ScrollToTop />
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/deposit" element={<Deposit />} />
-              <Route path="/withdraw" element={<Withdraw />} />
-              <Route path="/forget-password" element={<ForgotPassword />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/history" element={<History />} />
-              {/* <Route path="/assets" element={<Assets />} /> */}
-              <Route path="/change-password" element={<ChangePassword />} />
-              <Route path="/about" element={<AboutUs />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms-of-service" element={<TermsOfService />} />
-              <Route path="/referral" element={<Referral />} />
-              <Route path="/rewards" element={<Rewards />} />
-              <Route path="/buy" element={<BuyNFT />} />
-            </Routes>
-          </Layout>
+          <Routes>
+            <Route path="/admin" element={<Routing />} />
+            <Route
+              path="*"
+              element={
+                <Layout>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/deposit" element={<Deposit />} />
+                    <Route path="/withdraw" element={<Withdraw />} />
+                    <Route path="/forget-password" element={<ForgotPassword />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/history" element={<History />} />
+                    {/* <Route path="/assets" element={<Assets />} /> */}
+                    <Route path="/change-password" element={<ChangePassword />} />
+                    <Route path="/about" element={<AboutUs />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/terms-of-service" element={<TermsOfService />} />
+                    <Route path="/referral" element={<Referral />} />
+                    <Route path="/rewards" element={<Rewards />} />
+                    <Route path="/buy" element={<BuyNFT />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                  </Routes>
+                </Layout>
+              }
+            />
+          </Routes>
         </PersistGate>
       </Provider>
     </BrowserRouter>
