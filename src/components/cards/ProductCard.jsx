@@ -8,11 +8,7 @@ const ProductCard = ({ id, title, price, image }) => {
   const navigate = useNavigate();
   const onBuyClick = () => {
     if (user) {
-      if (user.current_balance > 0) {
-        navigate("/buy");
-      } else {
-        toast.error("Please deposit credit to buy!");
-      }
+      navigate("/buy");
     } else {
       toast.error("Please Login first to buy!");
     }
