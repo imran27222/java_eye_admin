@@ -17,6 +17,9 @@ const usePurchaseAuth = () => {
       toast.warn("Please verify your email first!");
       return false;
     }
+    if (user.current_balance === 0) {
+      toast.error("Please deposit credit to buy!");
+    }
     if (user.current_balance < price) {
       toast.warn("Current Credit is Lower then Product Price!");
       return false;
