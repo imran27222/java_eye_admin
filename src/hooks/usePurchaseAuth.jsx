@@ -33,25 +33,9 @@ const usePurchaseAuth = () => {
     return true;
   };
 
-  const makePurchase = async (product) => {
-    if (canPurchase(product.product_price)) {
-      try {
-        const { setLastPurchase } = await import("../store/user/userSlice"); // Import the logout action
-        // Make the purchase call here
-
-        const response = await api.post("/products/buy", product);
-        if (response) {
-          dispatch(setLastPurchase(response.data.product));
-          dispatch(fetchUser());
-          toast.success("Purchase successful!");
-        }
-      } catch (error) {
-        if (error.response.data.message) {
-          toast.error(error.response.data.message);
-        } else {
-          toast.error(error);
-        }
-      }
+  const makePurchase = async ({ cb, amount }) => {
+    if (canPurchase(amount)) {
+      cb();
     }
   };
 

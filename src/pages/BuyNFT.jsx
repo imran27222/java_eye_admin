@@ -3,14 +3,34 @@ import withAuth from "../components/hoc/withAuth";
 import Timer from "../components/purchase/Timer";
 import YourCollection from "../components/buySection/YourCollection";
 import BuySection from "../components/buySection/BuySection";
+import api from "../utils/axios";
 
 const NFTBuy = () => {
   const [walletBalance, setWalletBalance] = useState(0);
-  const [investedBalance, setInvestedBalance] = useState(10);
+  const [investedBalance, setInvestedBalance] = useState(0);
   const [totalEarning, setTotalEarning] = useState(0);
-  const [todayEarning, setTodayEarning] = useState(14.8);
+  const [todayEarning, setTodayEarning] = useState(0);
   const [reservationRange, setReservationRange] = useState("1-1000");
   const [profitRate, setProfitRate] = useState("0-3%");
+
+  const fetchSummary = async () => {
+    try {
+      const response = await api.get("/auth/buy-summary");
+      if (response?.data) {
+        setWalletBalance(response?.data?.wallet_balance);
+        setInvestedBalance(response?.data?.invested_balance);
+        setTotalEarning(response?.data?.total_earning);
+        setTodayEarning(response?.data?.today_earning);
+      }
+    } catch (error) {
+      if (error.response.data.message) {
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchSummary();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-300 flex flex-col items-center p-6">
