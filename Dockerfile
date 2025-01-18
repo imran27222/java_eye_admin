@@ -19,6 +19,10 @@ RUN npm run build
 # Stage 2: Production Stage
 FROM nginx:alpine
 
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+
 # Copy the built files from the build stage to Nginx's web root
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
