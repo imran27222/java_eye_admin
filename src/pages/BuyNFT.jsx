@@ -37,7 +37,7 @@ const NFTBuy = () => {
       <h1 className="text-3xl text-pink-500 font-semibold mb-6">GFT BUY</h1>
 
       {/* Balance and Statistics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 w-full max-w-4xl mb-6">
         <div className="p-4 bg-gray-800 rounded-lg text-center">
           <p>Wallet Balance:</p>
           <p className="text-lg font-semibold text-pink-500">{walletBalance} USDT</p>
