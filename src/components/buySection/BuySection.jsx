@@ -6,7 +6,7 @@ import api from "../../utils/axios";
 import { toast } from "react-toastify";
 import usePurchaseAuth from "../../hooks/usePurchaseAuth";
 
-function BuySection() {
+function BuySection({ fetchSummary }) {
   const { lastPurchase } = useSelector((store) => store.user);
   const { makePurchase } = usePurchaseAuth();
   const dispatch = useDispatch();
@@ -23,6 +23,7 @@ function BuySection() {
         // work here
         dispatch(setLastPurchase(response.data.product));
         dispatch(fetchUser());
+        fetchSummary();
         toast.success("Purchase successful!");
       }
     } catch (error) {
