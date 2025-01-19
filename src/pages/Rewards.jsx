@@ -126,7 +126,7 @@ const Rewards = () => {
                   <h4 className="text-lg font-semibold">
                     <span className="text-pink-500">VIP LEVEL {level}</span>
                   </h4>
-                  <p>RAFAL: {level * 10}</p>
+                  <p>REFARRAL: {level * 10}</p>
                   <p>DEPOSIT: $100</p>
                 </div>
                 <div className="text-right sm:text-left">
