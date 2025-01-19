@@ -63,10 +63,12 @@ const userSlice = createSlice({
       .addCase(signin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something went wrong";
+        state.lastPurchase = null;
       })
       .addCase(fetchUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something went wrong";
+        state.lastPurchase = null;
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.loading = false;

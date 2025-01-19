@@ -16,7 +16,6 @@ axiosInstance.interceptors.request.use(
     // Get the token from Redux store
     const state = store.getState();
     const token = state.admin.token; // Assuming your admin slice stores the token
-
     // If a token exists, add it to the request headers
     if (token) {
       config.headers["x-auth-token"] = token;

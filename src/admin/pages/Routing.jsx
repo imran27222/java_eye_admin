@@ -5,6 +5,8 @@ import api from "../../utils/adminAxios";
 import AdminLogin from "./AdminLogin";
 import AdminPortalLayout from "../components/layout/AdminLayout";
 import AdminHome from "../components/home/AdminHome";
+import DepositRequests from "./DepositRequests";
+import WithdrawRequests from "./WithdrawRequests";
 function Routing() {
   const token = useSelector((store) => store.admin.token);
   const dispatch = useDispatch();
@@ -19,9 +21,9 @@ function Routing() {
       }
     }
   };
-  useEffect(() => {
-    getAdmin();
-  }, [token]);
+  // useEffect(() => {
+  //   getAdmin();
+  // }, [token]);
   return (
     <Routes>
       {token ? (
@@ -29,8 +31,8 @@ function Routing() {
         <>
           <Route path="" element={<AdminPortalLayout />}>
             <Route index element={<AdminHome />} />
-            <Route path="/deposit" element={<h1>DEPOSIT</h1>} />
-            <Route path="/withdraw" element={<h1>WITHDRAW</h1>} />
+            <Route path="/deposit" element={<DepositRequests />} />
+            <Route path="/withdraw" element={<WithdrawRequests />} />
           </Route>
           <Route path="*" element={<Navigate to="/admin" />} />
         </>
