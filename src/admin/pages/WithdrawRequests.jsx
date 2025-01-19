@@ -33,7 +33,7 @@ const WithdrawRequests = () => {
   // Handle Approve button click
   const handleApprove = async (id) => {
     try {
-      await api.put(`/withdraw-requests/${id}`, {
+      await api.put(`/withdraw/${id}`, {
         status: "confirmed",
       });
       fetchRequests(); // Reload the data after approval
@@ -45,7 +45,7 @@ const WithdrawRequests = () => {
   // Handle Cancel button click
   const handleCancel = async (id) => {
     try {
-      await api.put(`/withdraw-requests/${id}`, {
+      await api.put(`/withdraw/${id}`, {
         status: "rejected",
       });
       fetchRequests(); // Reload the data after cancellation
@@ -74,28 +74,38 @@ const WithdrawRequests = () => {
       <table className="min-w-full table-auto border-collapse border border-gray-300">
         <thead>
           <tr>
-            <th className="border border-gray-300 px-4 py-2">ID</th>
-            <th className="border border-gray-300 px-4 py-2">User</th>
-            <th className="border border-gray-300 px-4 py-2">Amount</th>
+            <th className="border border-gray-300 px-4 py-2">Username</th>
+            <th className="border border-gray-300 px-4 py-2">Email</th>
+            <th className="border border-gray-300 px-4 py-2">Wallet Address</th>
+            <th className="border border-gray-300 px-4 py-2">Wallet Type</th>
+            <th className="border border-gray-300 px-4 py-2">Amount (USDT)</th>
             <th className="border border-gray-300 px-4 py-2">Status</th>
-            <th className="border border-gray-300 px-4 py-2">Actions</th>
+            {(statusFilter === "pending" || statusFilter === "") && <th className="border border-gray-300 px-4 py-2">Actions</th>}
           </tr>
         </thead>
         <tbody>
           {requests.map((request) => (
             <tr key={request.id}>
-              <td className="border border-gray-300 px-4 py-2">{request.id}</td>
-              <td className="border border-gray-300 px-4 py-2">{request.user}</td>
-              <td className="border border-gray-300 px-4 py-2">{request.amount}</td>
+              <td className="border border-gray-300 px-4 py-2">{request.userName}</td>
+              <td className="border border-gray-300 px-4 py-2">{request.email}</td>
+              <td className="border border-gray-300 px-4 py-2">{request.wallet_address}</td>
+              <td className="border border-gray-300 px-4 py-2">{request.wallet_type}</td>
+              <td className="border border-gray-300 px-4 py-2">{request.withdraw_amount}</td>
               <td className="border border-gray-300 px-4 py-2">{request.status}</td>
-              <td className="border border-gray-300 px-4 py-2">
-                <button onClick={() => handleApprove(request.id)} className="bg-green-500 text-white px-4 py-2 rounded-lg mr-2">
-                  Approve
-                </button>
-                <button onClick={() => handleCancel(request.id)} className="bg-red-500 text-white px-4 py-2 rounded-lg">
-                  Cancel
-                </button>
-              </td>
+              {(statusFilter === "pending" || statusFilter === "") && (
+                <td className="border border-gray-300 px-4 py-2">
+                  {request.status === "pending" && (
+                    <>
+                      <button onClick={() => handleApprove(request.id)} className="bg-green-500 text-white px-4 py-2 rounded-lg mr-2">
+                        Approve
+                      </button>
+                      <button onClick={() => handleCancel(request.id)} className="bg-red-500 text-white px-4 py-2 rounded-lg">
+                        Cancel
+                      </button>
+                    </>
+                  )}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
