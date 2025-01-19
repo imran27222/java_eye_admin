@@ -42,7 +42,6 @@ function BuySection() {
         return acc;
       }, 0);
 
-      console.log("Purchase Payload: ", { items: selectedNfts, purchase_amount });
       makePurchase({
         cb: () => {
           buyCall({ items: selectedNfts, purchase_amount });
