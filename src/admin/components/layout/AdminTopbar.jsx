@@ -1,16 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Bars3Icon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const AdminTopbar = ({ onMenuClick }) => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    console.log("Logout clicked");
+  const handleLogout = async () => {
     setIsDropdownOpen(false);
     // Perform logout logic here
+    const { logoutAdmin } = await import("../../../store/admin/adminSlice");
+    dispatch(logoutAdmin());
   };
 
   // Close dropdown when clicking outside
