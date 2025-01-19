@@ -64,7 +64,7 @@ const NFTBuy = () => {
         </div>
       </div>
 
-      <BuySection />
+      <BuySection fetchSummary={fetchSummary} />
 
       <Timer />
       <YourCollection />
