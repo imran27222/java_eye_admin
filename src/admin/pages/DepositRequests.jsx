@@ -7,12 +7,15 @@ const DepositRequests = () => {
   const [statusFilter, setStatusFilter] = useState("pending");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [modalImage, setModalImage] = useState(null);
+  const [confirmationData, setConfirmationData] = useState(null);
+  const [depositedAmount, setDepositedAmount] = useState(""); // New state for deposited amount
+  const [errorMessage, setErrorMessage] = useState(""); // To track validation errors
 
   useEffect(() => {
     fetchRequests();
   }, [currentPage, searchTerm, statusFilter]);
 
-  // Fetch deposit requests from the backend
   const fetchRequests = async () => {
     try {
       const response = await api.get("/deposit/all", {
@@ -30,38 +33,61 @@ const DepositRequests = () => {
     }
   };
 
-  // Handle Approve button click
   const handleApprove = async (id) => {
+    if (!depositedAmount || isNaN(depositedAmount) || depositedAmount <= 0) {
+      setErrorMessage("Please enter a valid deposited amount.");
+      return;
+    }
+
     try {
-      await api.put(`/deposit-requests/${id}`, {
+      await api.put(`/deposit/${id}`, {
         status: "confirmed",
+        amount: depositedAmount, // Send the deposited amount
       });
-      fetchRequests(); // Reload the data after approval
+      fetchRequests();
+      closeConfirmation();
     } catch (error) {
       console.error("Error approving request:", error);
+      setErrorMessage("An error occurred while approving the request.");
     }
   };
 
-  // Handle Cancel button click
   const handleCancel = async (id) => {
     try {
-      await api.put(`/deposit-requests/${id}`, {
+      await api.put(`/deposit/${id}`, {
         status: "rejected",
       });
-      fetchRequests(); // Reload the data after cancellation
+      fetchRequests();
+      closeConfirmation();
     } catch (error) {
       console.error("Error canceling request:", error);
     }
+  };
+
+  const handleProof = (image) => {
+    setModalImage(image);
+  };
+
+  const openConfirmation = (action, request) => {
+    setConfirmationData({ action, request });
+    setDepositedAmount(""); // Reset deposited amount when opening the modal
+    setErrorMessage(""); // Clear error message
+  };
+
+  const closeConfirmation = () => {
+    setConfirmationData(null);
+    setErrorMessage(""); // Clear error message on closing modal
+  };
+
+  const closeModal = () => {
+    setModalImage(null);
   };
 
   return (
     <div className="p-6">
       {/* Filters */}
       <div className="flex justify-between mb-4">
-        {/* Search */}
         <input type="text" placeholder="Search by name or ID" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="px-4 py-2 border rounded-lg w-1/3" />
-
-        {/* Status Filter */}
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-4 py-2 border rounded-lg w-1/3">
           <option value="">All Statuses</option>
           <option value="pending">Pending</option>
@@ -74,28 +100,40 @@ const DepositRequests = () => {
       <table className="min-w-full table-auto border-collapse border border-gray-300">
         <thead>
           <tr>
-            <th className="border border-gray-300 px-4 py-2">ID</th>
-            <th className="border border-gray-300 px-4 py-2">User</th>
-            <th className="border border-gray-300 px-4 py-2">Amount</th>
+            <th className="border border-gray-300 px-4 py-2">Username</th>
+            <th className="border border-gray-300 px-4 py-2">Email</th>
+            <th className="border border-gray-300 px-4 py-2">Transaction Number</th>
+            <th className="border border-gray-300 px-4 py-2">Proof</th>
             <th className="border border-gray-300 px-4 py-2">Status</th>
-            <th className="border border-gray-300 px-4 py-2">Actions</th>
+            {(statusFilter === "pending" || statusFilter === "") && <th className="border border-gray-300 px-4 py-2">Actions</th>}
           </tr>
         </thead>
         <tbody>
           {requests.map((request) => (
             <tr key={request.id}>
-              <td className="border border-gray-300 px-4 py-2">{request.id}</td>
-              <td className="border border-gray-300 px-4 py-2">{request.user}</td>
-              <td className="border border-gray-300 px-4 py-2">{request.amount}</td>
-              <td className="border border-gray-300 px-4 py-2">{request.status}</td>
+              <td className="border border-gray-300 px-4 py-2">{request.userName}</td>
+              <td className="border border-gray-300 px-4 py-2">{request.email}</td>
+              <td className="border border-gray-300 px-4 py-2">{request.transaction_number}</td>
               <td className="border border-gray-300 px-4 py-2">
-                <button onClick={() => handleApprove(request.id)} className="bg-green-500 text-white px-4 py-2 rounded-lg mr-2">
-                  Approve
-                </button>
-                <button onClick={() => handleCancel(request.id)} className="bg-red-500 text-white px-4 py-2 rounded-lg">
-                  Cancel
+                <button onClick={() => handleProof(request.image)} className="bg-green-400 text-white px-4 py-2 rounded-lg mr-2">
+                  Proof
                 </button>
               </td>
+              <td className="border border-gray-300 px-4 py-2">{request.status}</td>
+              {(statusFilter === "pending" || statusFilter === "") && (
+                <td className="border border-gray-300 px-4 py-2">
+                  {request.status === "pending" && (
+                    <>
+                      <button onClick={() => openConfirmation("approve", request)} className="bg-green-500 text-white px-4 py-2 rounded-lg mr-2">
+                        Approve
+                      </button>
+                      <button onClick={() => openConfirmation("cancel", request)} className="bg-red-500 text-white px-4 py-2 rounded-lg">
+                        Cancel
+                      </button>
+                    </>
+                  )}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
@@ -113,6 +151,48 @@ const DepositRequests = () => {
           Next
         </button>
       </div>
+
+      {/* Proof Modal */}
+      {modalImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
+            <img src={modalImage} alt="Proof" className="w-full h-auto mb-4" />
+            <button onClick={closeModal} className="px-4 py-2 bg-red-500 text-white rounded-lg">
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Confirmation Modal */}
+      {confirmationData && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 className="text-lg font-semibold mb-4">{confirmationData.action === "approve" ? "Approve Deposit" : "Cancel Deposit"}</h2>
+            <p className="mb-4">
+              Are you sure you want to {confirmationData.action} this deposit request for
+              <strong> {confirmationData.request.userName}</strong>?
+            </p>
+            {confirmationData.action === "approve" && (
+              <div className="mb-4">
+                <label htmlFor="depositedAmount" className="block text-sm font-medium text-gray-700">
+                  Deposited Amount
+                </label>
+                <input type="number" id="depositedAmount" value={depositedAmount} onChange={(e) => setDepositedAmount(e.target.value)} className="px-4 py-2 border rounded-lg w-full mt-2" placeholder="Enter deposited amount" />
+                {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+              </div>
+            )}
+            <div className="flex justify-end">
+              <button onClick={closeConfirmation} className="px-4 py-2 bg-gray-300 text-black rounded-lg mr-2">
+                Cancel
+              </button>
+              <button onClick={() => (confirmationData.action === "approve" ? handleApprove(confirmationData.request.id) : handleCancel(confirmationData.request.id))} className={`px-4 py-2 ${confirmationData.action === "approve" ? "bg-green-500" : "bg-red-500"} text-white rounded-lg`}>
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

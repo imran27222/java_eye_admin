@@ -7,12 +7,12 @@ const WithdrawRequests = () => {
   const [statusFilter, setStatusFilter] = useState("pending");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [modalData, setModalData] = useState(null);
 
   useEffect(() => {
     fetchRequests();
   }, [currentPage, searchTerm, statusFilter]);
 
-  // Fetch withdraw requests from the backend
   const fetchRequests = async () => {
     try {
       const response = await api.get("/withdraw/all", {
@@ -30,38 +30,43 @@ const WithdrawRequests = () => {
     }
   };
 
-  // Handle Approve button click
   const handleApprove = async (id) => {
     try {
       await api.put(`/withdraw/${id}`, {
         status: "confirmed",
       });
-      fetchRequests(); // Reload the data after approval
+      fetchRequests();
+      setModalData(null); // Close modal after action
     } catch (error) {
       console.error("Error approving request:", error);
     }
   };
 
-  // Handle Cancel button click
   const handleCancel = async (id) => {
     try {
       await api.put(`/withdraw/${id}`, {
         status: "rejected",
       });
-      fetchRequests(); // Reload the data after cancellation
+      fetchRequests();
+      setModalData(null); // Close modal after action
     } catch (error) {
       console.error("Error canceling request:", error);
     }
+  };
+
+  const openModal = (action, request) => {
+    setModalData({ action, request });
+  };
+
+  const closeModal = () => {
+    setModalData(null);
   };
 
   return (
     <div className="p-6">
       {/* Filters */}
       <div className="flex justify-between mb-4">
-        {/* Search */}
         <input type="text" placeholder="Search by name or ID" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="px-4 py-2 border rounded-lg w-1/3" />
-
-        {/* Status Filter */}
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-4 py-2 border rounded-lg w-1/3">
           <option value="">All Statuses</option>
           <option value="pending">Pending</option>
@@ -96,10 +101,10 @@ const WithdrawRequests = () => {
                 <td className="border border-gray-300 px-4 py-2">
                   {request.status === "pending" && (
                     <>
-                      <button onClick={() => handleApprove(request.id)} className="bg-green-500 text-white px-4 py-2 rounded-lg mr-2">
+                      <button onClick={() => openModal("approve", request)} className="bg-green-500 text-white px-4 py-2 rounded-lg mr-2">
                         Approve
                       </button>
-                      <button onClick={() => handleCancel(request.id)} className="bg-red-500 text-white px-4 py-2 rounded-lg">
+                      <button onClick={() => openModal("cancel", request)} className="bg-red-500 text-white px-4 py-2 rounded-lg">
                         Cancel
                       </button>
                     </>
@@ -123,6 +128,26 @@ const WithdrawRequests = () => {
           Next
         </button>
       </div>
+
+      {/* Modal */}
+      {modalData && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 className="text-lg font-semibold mb-4">{modalData.action === "approve" ? "Approve Withdrawal" : "Cancel Withdrawal"}</h2>
+            <p className="mb-4">
+              Are you sure you want to {modalData.action} this withdrawal request for <strong>{modalData.request.userName}</strong>?
+            </p>
+            <div className="flex justify-end">
+              <button onClick={closeModal} className="px-4 py-2 bg-gray-300 text-black rounded-lg mr-2">
+                Cancel
+              </button>
+              <button onClick={() => (modalData.action === "approve" ? handleApprove(modalData.request.id) : handleCancel(modalData.request.id))} className={`px-4 py-2 ${modalData.action === "approve" ? "bg-green-500" : "bg-red-500"} text-white rounded-lg`}>
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
