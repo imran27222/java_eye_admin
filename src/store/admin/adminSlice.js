@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchUserService, loginUser } from "./userService"; // Import the service function
+import { fetchUserService, loginUser } from "./adminService"; // Import the service function
 
 // Async Thunk for Sign-In
-export const signin = createAsyncThunk("user/signin", async (credentials, { rejectWithValue }) => {
+export const signinAdmin = createAsyncThunk("admin/signin", async (credentials, { rejectWithValue }) => {
   try {
     const data = await loginUser(credentials); // Call the login service
     return data; // Assume the API returns a user object and token
@@ -10,7 +10,7 @@ export const signin = createAsyncThunk("user/signin", async (credentials, { reje
     return rejectWithValue(error.message); // Pass the error message to Redux state
   }
 });
-export const fetchUser = createAsyncThunk("user/fetchuser", async (_, { rejectWithValue }) => {
+export const fetchAdmin = createAsyncThunk("admin/fetchuser", async (_, { rejectWithValue }) => {
   try {
     const data = await fetchUserService(); // Call the login service
     return data; // Assume the API returns a user object and token
@@ -19,69 +19,59 @@ export const fetchUser = createAsyncThunk("user/fetchuser", async (_, { rejectWi
   }
 });
 
-const userSlice = createSlice({
-  name: "user",
+const adminSlice = createSlice({
+  name: "admin",
   initialState: {
     user: null, // Stores the logged-in user's information
     token: null, // Stores the user's authentication token
-    lastPurchase: null, // Stores the user's last purchase
     loading: false, // Tracks the loading state of the API call
     error: null, // Stores error messages from the API call
   },
   reducers: {
-    setUser: (state, action) => {
+    setAdmin: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.error = null;
-      state.lastPurchase = action.payload.lastPurchase;
     },
-    logout: (state) => {
+    logoutAdmin: (state) => {
       state.user = null;
       state.token = null;
       state.error = null;
-      state.lastPurchase = null;
-    },
-    setLastPurchase: (state, action) => {
-      state.lastPurchase = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
       // Pending state for the API call
-      .addCase(signin.pending, (state) => {
+      .addCase(signinAdmin.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       // Fulfilled state for a successful API call
-      .addCase(signin.fulfilled, (state, action) => {
+      .addCase(signinAdmin.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user; // Assume API returns a `user` object
         state.token = action.payload.token; // Assume API returns a `token`
-        state.lastPurchase = action.payload.lastPurchase; // Assume API returns a `lastPurchase`
       })
       // Rejected state for a failed API call
-      .addCase(signin.rejected, (state, action) => {
+      .addCase(signinAdmin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something went wrong";
-        state.lastPurchase = null;
       })
-      .addCase(fetchUser.rejected, (state, action) => {
+      .addCase(fetchAdmin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something went wrong";
-        state.lastPurchase = null;
       })
-      .addCase(fetchUser.fulfilled, (state, action) => {
+      .addCase(fetchAdmin.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user; // Assume API returns a `user` object
         state.token = action.payload.token; // Assume API returns a `token`
-        state.lastPurchase = action.payload.lastPurchase; // Assume API returns a `lastPurchase`
       })
-      .addCase(fetchUser.pending, (state) => {
+      .addCase(fetchAdmin.pending, (state) => {
         state.loading = true;
         state.error = null;
       });
   },
 });
 
-export const { setUser, logout, setLastPurchase } = userSlice.actions;
-export default userSlice.reducer;
+export const { setAdmin, logoutAdmin } = adminSlice.actions;
+export default adminSlice.reducer;
