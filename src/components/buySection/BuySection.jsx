@@ -68,6 +68,7 @@ function BuySection({ fetchSummary }) {
       <div className="flex flex-col sm:flex-row items-center gap-2 mb-6">
         <select value={selectedAmount} onChange={handleAmountChange} className="p-3 bg-gray-800 text-pink-500 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500">
           <option value="0">Select Amount</option>
+          <option value="30">30 USDT</option>
           <option value="50">50 USDT</option>
           <option value="100">100 USDT</option>
           <option value="150">150 USDT</option>

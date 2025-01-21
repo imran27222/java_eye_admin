@@ -17,6 +17,7 @@ import nft17 from "../assets/images/nft/nft17.jpg";
 import nft18 from "../assets/images/nft/nft18.jpg";
 
 const nfts = [
+  { id: "o1p2q3r5", title: "EtherKing", price: 30, image: nft11 },
   { id: "a1b2c3d4", title: "PixelProwler", price: 50, image: nft10 },
   { id: "e5f6g7h8", title: "ChainWarrior", price: 100, image: nft2 },
   { id: "i9j0k1l2", title: "MetaMage", price: 150, image: nft3 },
