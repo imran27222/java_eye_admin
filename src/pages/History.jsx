@@ -78,13 +78,13 @@ const History = () => {
                 <li key={index} className="flex justify-between items-center bg-[#4a5568] p-4 rounded-md text-gray-200">
                   {activeTab === "deposit" ? (
                     <>
-                      <span>{item.transaction_number}</span>
+                      <span className="w-48 overflow-hidden whitespace-nowrap text-ellipsis">{item.transaction_number}</span>
                       <span className="text-sm text-gray-400">{formatDate(item.created_at)}</span>
                       {item.is_approved ? <span className="text-sm text-green-400">Done</span> : <span className="text-sm text-yellow-400">Pending</span>}
                     </>
                   ) : (
                     <>
-                      <span>{item.wallet_address}</span>
+                      <span className="w-48 overflow-hidden whitespace-nowrap text-ellipsis">{item.wallet_address}</span>
                       <span className="text-sm text-green-400">${item.withdraw_amount}</span>
                       <span className="text-sm text-gray-400">{formatDate(item.created_at)}</span>
                       <span className="capitalize">{item.status}</span>
