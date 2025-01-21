@@ -51,7 +51,7 @@ const ChangePassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsLoading(true); // Start loading
 
     if (validateForm()) {
       const { currentPassword, newPassword } = formData;
@@ -70,12 +70,18 @@ const ChangePassword = () => {
           }
         })
         .catch((errors) => {
-          if (errors.response.data.message) {
+          if (errors.response?.data?.message) {
             toast.error(errors.response.data.message);
+          } else {
+            toast.error("An unexpected error occurred.");
           }
+        })
+        .finally(() => {
+          setIsLoading(false); // Stop loading
         });
+    } else {
+      setIsLoading(false); // Stop loading if form is invalid
     }
-    setIsLoading(false);
   };
 
   return (
@@ -87,7 +93,15 @@ const ChangePassword = () => {
             <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-300">
               Current Password<span className="text-red-500">*</span>
             </label>
-            <input id="currentPassword" type="password" name="currentPassword" value={formData.currentPassword} onChange={handleChange} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+            <input
+              id="currentPassword"
+              type="password"
+              name="currentPassword"
+              value={formData.currentPassword}
+              onChange={handleChange}
+              disabled={isLoading}
+              className={`w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+            />
             {errors.currentPassword && <p className="text-red-500 text-sm mt-1">{errors.currentPassword}</p>}
           </div>
 
@@ -95,7 +109,15 @@ const ChangePassword = () => {
             <label htmlFor="newPassword" className="block text-sm font-medium text-gray-300">
               New Password<span className="text-red-500">*</span>
             </label>
-            <input id="newPassword" type="password" name="newPassword" value={formData.newPassword} onChange={handleChange} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+            <input
+              id="newPassword"
+              type="password"
+              name="newPassword"
+              value={formData.newPassword}
+              onChange={handleChange}
+              disabled={isLoading}
+              className={`w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+            />
             {errors.newPassword && <p className="text-red-500 text-sm mt-1">{errors.newPassword}</p>}
           </div>
 
@@ -103,12 +125,20 @@ const ChangePassword = () => {
             <label htmlFor="confirmNewPassword" className="block text-sm font-medium text-gray-300">
               Confirm New Password<span className="text-red-500">*</span>
             </label>
-            <input id="confirmNewPassword" type="password" name="confirmNewPassword" value={formData.confirmNewPassword} onChange={handleChange} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+            <input
+              id="confirmNewPassword"
+              type="password"
+              name="confirmNewPassword"
+              value={formData.confirmNewPassword}
+              onChange={handleChange}
+              disabled={isLoading}
+              className={`w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+            />
             {errors.confirmNewPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmNewPassword}</p>}
           </div>
 
-          <button type="submit" className="w-full py-3 px-4 bg-pink-500 text-white font-semibold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500" disabled={isLoading}>
-            Change Password
+          <button type="submit" className={`w-full py-3 px-4 bg-pink-500 text-white font-semibold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`} disabled={isLoading}>
+            {isLoading ? "Processing..." : "Change Password"}
           </button>
 
           <div className="text-center mt-4 text-sm text-gray-400">
