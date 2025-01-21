@@ -80,7 +80,7 @@ const History = () => {
                     <>
                       <span className="w-48 overflow-hidden whitespace-nowrap text-ellipsis">{item.transaction_number}</span>
                       <span className="text-sm text-gray-400">{formatDate(item.created_at)}</span>
-                      {item.is_approved ? <span className="text-sm text-green-400">Done</span> : <span className="text-sm text-yellow-400">Pending</span>}
+                      <span className="capitalize text-sm">{item.status}</span>
                     </>
                   ) : (
                     <>
