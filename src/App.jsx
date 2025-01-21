@@ -24,6 +24,7 @@ import BuyNFT from "./pages/BuyNFT";
 import Routing from "./admin/pages/Routing";
 import NotFoundPage from "./pages/NotFound";
 import { ToastContainer } from "react-toastify";
+import SetPassword from "./pages/SetPassword";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
                     <Route path="/referral" element={<Referral />} />
                     <Route path="/rewards" element={<Rewards />} />
                     <Route path="/buy" element={<BuyNFT />} />
+                    <Route path="/set-password" element={<SetPassword />} />
                     <Route path="*" element={<NotFoundPage />} />
                   </Routes>
                 </Layout>
