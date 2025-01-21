@@ -16,6 +16,8 @@ const Withdraw = () => {
     withdrawAmount: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -45,6 +47,7 @@ const Withdraw = () => {
     try {
       e.preventDefault();
       if (validateForm()) {
+        setLoading(true); // Start loading
         const { walletAddress, walletType, withdrawAmount } = formData;
 
         const payload = {
@@ -56,13 +59,11 @@ const Withdraw = () => {
         const response = await api.post("/withdraw", payload);
 
         if (response.data.message) {
-          // Simulate API request with toast
           toast.success("Withdrawal request submitted successfully!", {
             position: "top-right",
           });
           navigate("/");
 
-          // Reset form after submission
           setFormData({
             walletAddress: "",
             walletType: "TRC20",
@@ -73,11 +74,13 @@ const Withdraw = () => {
         }
       }
     } catch (error) {
-      if (error.response.data.message) {
+      if (error.response?.data?.message) {
         toast.error(error.response.data.message);
       } else {
         toast.error(error.message);
       }
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -97,7 +100,8 @@ const Withdraw = () => {
               value={formData.walletAddress}
               onChange={handleChange}
               placeholder="Enter wallet address"
-              className="w-full px-4 py-2 rounded-lg bg-[#4a5568] text-gray-200 border border-[#718096] focus:outline-none focus:ring focus:ring-pink-500"
+              disabled={loading}
+              className={`w-full px-4 py-2 rounded-lg bg-[#4a5568] text-gray-200 border border-[#718096] focus:outline-none focus:ring focus:ring-pink-500 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             />
             {errors.walletAddress && <p className="text-red-500 text-sm mt-1">{errors.walletAddress}</p>}
           </div>
@@ -106,7 +110,14 @@ const Withdraw = () => {
             <label htmlFor="walletType" className="block text-sm text-gray-300 font-medium mb-2">
               Wallet Type
             </label>
-            <select id="walletType" name="walletType" value={formData.walletType} onChange={handleChange} className="w-full px-4 py-2 rounded-lg bg-[#4a5568] text-gray-200 border border-[#718096] focus:outline-none focus:ring focus:ring-pink-500">
+            <select
+              id="walletType"
+              name="walletType"
+              value={formData.walletType}
+              onChange={handleChange}
+              disabled={loading}
+              className={`w-full px-4 py-2 rounded-lg bg-[#4a5568] text-gray-200 border border-[#718096] focus:outline-none focus:ring focus:ring-pink-500 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+            >
               <option value="TRC20">TRC20</option>
               <option value="ERC20">ERC20</option>
               <option value="BTC">BTC</option>
@@ -124,13 +135,14 @@ const Withdraw = () => {
               value={formData.withdrawAmount}
               onChange={handleChange}
               placeholder="Enter amount"
-              className="w-full px-4 py-2 rounded-lg bg-[#4a5568] text-gray-200 border border-[#718096] focus:outline-none focus:ring focus:ring-pink-500"
+              disabled={loading}
+              className={`w-full px-4 py-2 rounded-lg bg-[#4a5568] text-gray-200 border border-[#718096] focus:outline-none focus:ring focus:ring-pink-500 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             />
             {errors.withdrawAmount && <p className="text-red-500 text-sm mt-1">{errors.withdrawAmount}</p>}
           </div>
 
-          <button type="submit" className="w-full py-2 text-lg font-semibold text-white bg-pink-500 rounded-lg hover:bg-pink-600 transition">
-            Withdraw
+          <button type="submit" disabled={loading} className={`w-full py-2 text-lg font-semibold text-white bg-pink-500 rounded-lg hover:bg-pink-600 transition ${loading ? "opacity-50 cursor-not-allowed" : ""}`}>
+            {loading ? "Processing..." : "Withdraw"}
           </button>
         </form>
       </div>

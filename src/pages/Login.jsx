@@ -57,21 +57,6 @@ const Login = () => {
     }
   };
 
-  // if (token) {
-  //   return (
-  //     <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-  //       <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
-  //         <h2 className="text-3xl font-semibold text-center text-pink-500 mb-6">You are already logged in</h2>
-  //         <div className="text-center mt-4 text-sm text-gray-400">
-  //           <Link to="/" className="text-pink-500 hover:underline">
-  //             Go to Home
-  //           </Link>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
       <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -81,7 +66,7 @@ const Login = () => {
             <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
               Email
             </label>
-            <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+            <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} disabled={loading} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
 
@@ -89,13 +74,14 @@ const Login = () => {
             <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
               Password
             </label>
-            <input id="password" type="password" name="password" value={formData.password} onChange={handleChange} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+            <input id="password" type="password" name="password" value={formData.password} onChange={handleChange} disabled={loading} className="w-full p-3 mt-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
 
-          <button type="submit" className="w-full py-3 px-4 bg-pink-500 text-white font-semibold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500">
-            Login
+          <button type="submit" className={`w-full py-3 px-4 bg-pink-500 text-white font-semibold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 ${loading ? "opacity-50 cursor-not-allowed" : ""}`} disabled={loading}>
+            {loading ? "Processing..." : "Login"}
           </button>
+
           <div className="text-center mt-4 text-sm text-gray-400">
             <Link to="/signup" className="text-pink-500 hover:underline">
               Create your own account.
