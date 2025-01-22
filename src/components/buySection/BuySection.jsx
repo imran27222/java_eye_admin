@@ -7,13 +7,13 @@ import { toast } from "react-toastify";
 import usePurchaseAuth from "../../hooks/usePurchaseAuth";
 
 function BuySection({ fetchSummary }) {
-  const { lastPurchase } = useSelector((store) => store.user);
+  const { lastPurchase, user } = useSelector((store) => store.user);
   const { makePurchase } = usePurchaseAuth();
   const dispatch = useDispatch();
 
   const [selectedAmount, setSelectedAmount] = useState(0);
 
-  const handleAmountChange = (e) => setSelectedAmount(Number(e.target.value));
+  const handleAmountChange = (e) => setSelectedAmount(e.target.value === "all" ? "all" : Number(e.target.value));
 
   const buyCall = async (payload) => {
     try {
@@ -37,7 +37,9 @@ function BuySection({ fetchSummary }) {
 
   const handleBuyNow = async () => {
     try {
-      const selectedNfts = findExactNfts(nfts, selectedAmount);
+      const investedAmount = selectedAmount === "all" ? user.current_balance - (user.current_balance % 50) : selectedAmount;
+      const selectedNfts = findExactNfts(nfts, investedAmount);
+      console.log(investedAmount, selectedNfts);
       const purchase_amount = selectedNfts.reduce((acc, item) => {
         acc += item.price;
         return acc;
@@ -169,6 +171,7 @@ function BuySection({ fetchSummary }) {
           <option value="4900">4900 USDT</option>
           <option value="4950">4950 USDT</option>
           <option value="5000">5000 USDT</option>
+          <option value="all">Use all Balance</option>
         </select>
       </div>
       <button onClick={handleBuyNow} className="bg-blue-500 text-white px-6 py-3 rounded-md text-lg font-bold hover:bg-blue-600">
