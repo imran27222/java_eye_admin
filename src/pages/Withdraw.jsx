@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "../utils/axios";
 import withAuth from "../components/hoc/withAuth";
@@ -11,6 +11,8 @@ const Withdraw = () => {
     withdrawAmount: "",
   });
 
+  const [isWalletAdded, setIsWalletAdded] = useState(false);
+
   const [errors, setErrors] = useState({
     walletAddress: "",
     withdrawAmount: "",
@@ -19,6 +21,19 @@ const Withdraw = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  const fetchWalletInfo = async () => {
+    try {
+      const response = await api.get("/withdraw/wallet");
+      if (response.data.walletAddress) {
+        setIsWalletAdded(true);
+        setFormData((prev) => ({ ...prev, walletAddress: response.data.walletAddress, walletType: response.data.walletType }));
+      }
+    } catch (error) {}
+  };
+  useEffect(() => {
+    fetchWalletInfo();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,7 +115,7 @@ const Withdraw = () => {
               value={formData.walletAddress}
               onChange={handleChange}
               placeholder="Enter wallet address"
-              disabled={loading}
+              disabled={loading || isWalletAdded}
               className={`w-full px-4 py-2 rounded-lg bg-[#4a5568] text-gray-200 border border-[#718096] focus:outline-none focus:ring focus:ring-pink-500 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             />
             {errors.walletAddress && <p className="text-red-500 text-sm mt-1">{errors.walletAddress}</p>}
@@ -115,7 +130,7 @@ const Withdraw = () => {
               name="walletType"
               value={formData.walletType}
               onChange={handleChange}
-              disabled={loading}
+              disabled={loading || isWalletAdded}
               className={`w-full px-4 py-2 rounded-lg bg-[#4a5568] text-gray-200 border border-[#718096] focus:outline-none focus:ring focus:ring-pink-500 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               <option value="TRC20">TRC20</option>
