@@ -3,7 +3,10 @@ import api from "../utils/axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import withAuth from "../components/hoc/withAuth";
-import { QRCodeCanvas } from "qrcode.react";
+// import { QRCodeCanvas } from "qrcode.react";
+import qr from "../assets/images/QR.jpeg";
+
+const WALLET_ADDRESS = "TQ1eBbZ6qorEdSBKqv1D58dMeX5csR2dyk";
 
 const Deposit = () => {
   const [transactionNumber, setTransactionNumber] = useState("");
@@ -77,13 +80,14 @@ const Deposit = () => {
           <span className="font-bold">WalletADD:</span> <span className="text-red-500">TRC20</span>
         </p>
         <div className="flex items-center justify-between bg-gray-800 p-3 rounded-md mb-4">
-          <p className="text-gray-300 truncate">TAVsDZyEZiibcU8xz4wb4JHt3S9bCoKa3x</p>
-          <button onClick={() => navigator.clipboard.writeText("TAVsDZyEZiibcU8xz4wb4JHt3S9bCoKa3x")} className={`text-pink-500 text-sm font-medium hover:underline ${loading ? "opacity-50 cursor-not-allowed" : ""}`} disabled={loading}>
+          <p className="text-gray-300 truncate">{WALLET_ADDRESS}</p>
+          <button onClick={() => navigator.clipboard.writeText(WALLET_ADDRESS)} className={`text-pink-500 text-sm font-medium hover:underline ${loading ? "opacity-50 cursor-not-allowed" : ""}`} disabled={loading}>
             Copy
           </button>
         </div>
         <div className="flex justify-center mb-6">
-          <QRCodeCanvas value={"TAVsDZyEZiibcU8xz4wb4JHt3S9bCoKa3x"} size={128} bgColor="#1f2937" fgColor="#f43f5e" />
+          <img src={qr} width={128} />
+          {/* <QRCodeCanvas value={WALLET_ADDRESS} size={128} bgColor="#1f2937" fgColor="#f43f5e" /> */}
         </div>
         <div className="mb-4">
           <label htmlFor="transactionNumber" className="block text-gray-300 font-medium mb-1">
