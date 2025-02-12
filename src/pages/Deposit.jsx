@@ -4,9 +4,9 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import withAuth from "../components/hoc/withAuth";
 // import { QRCodeCanvas } from "qrcode.react";
-import qr from "../assets/images/QR.jpeg";
+import qr from "../assets/images/QR.png";
 
-const WALLET_ADDRESS = "TQ1eBbZ6qorEdSBKqv1D58dMeX5csR2dyk";
+const WALLET_ADDRESS = "TN7GcdXrdZykpciWcahNVo8TfQMYyHttEr";
 
 const Deposit = () => {
   const [transactionNumber, setTransactionNumber] = useState("");
