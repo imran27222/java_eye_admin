@@ -73,7 +73,7 @@ jobs:
           docker build -t react_app_image .
 
           # Run Docker container
-          docker run -d --name react_app -p 3000:3000 react_app_image
+          docker run -d --name react_app -p 3000:80 react_app_image
 
           echo "🚀 Docker container built and running on port 3000"
           EOF
