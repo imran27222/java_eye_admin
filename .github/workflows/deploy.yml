@@ -1,0 +1,66 @@
+name: Deploy React App to VPS on Port 3000
+
+on:
+  push:
+    branches:
+      - deployement
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Check VPS secrets
+        run: |
+          echo "VPS_HOST is set to: ${{ secrets.VPS_HOST }}"
+          echo "VPS_USER is set to: ${{ secrets.VPS_USER }}"
+          if [ -z "${{ secrets.VPS_SSH_KEY }}" ]; then
+            echo "❌ VPS_SSH_KEY is empty or not set!"
+            exit 1
+          else
+            echo "✅ VPS_SSH_KEY is set and non-empty."
+          fi
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Test SSH connection
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo '✅ Connected to VPS'"
+
+      - name: Ensure target directory exists
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "mkdir -p /home/java_eye/admin/source"
+
+      - name: Clean source directory on VPS before sync
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
+          "rm -rf /home/java_eye/admin/source/* && echo '🧹 Cleaned /home/java_eye/admin/source/'"
+
+      - name: Rsync project files to VPS
+        run: |
+          rsync -avz -e "ssh -i ~/.ssh/id_rsa" ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/java_eye/admin/source/
+
+      - name: Build and Run Docker Container on VPS
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          cd /home/java_eye/admin/source/
+
+          # Optional: Stop and remove any existing container
+          docker stop react_app || true
+          docker rm react_app || true
+
+          # Build Docker image
+          docker build -t react_app_image .
+
+          # Run Docker container
+          docker run -d --name react_app -p 3000:3000 react_app_image
+
+          echo "🚀 Docker container built and running on port 3000"
+          EOF
