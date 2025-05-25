@@ -64,7 +64,7 @@ function App() {
                 </Layout>
               }
             /> */}
-            <Routes path="*" element={<Navigate to="/admin" />} />
+            <Route path="*" element={<Navigate to="/admin" />} />
           </Routes>
           <ToastContainer
             position="top-right"
