@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router";
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router";
 import Home from "./pages/Home";
 import Layout from "./components/layout/Layout";
 import { Provider } from "react-redux";
@@ -37,7 +37,7 @@ function App() {
               <Route index element={<Routing />} />
               <Route path="*" element={<Routing />} />
             </Route>
-            <Route
+            {/*<Route
               path="*"
               element={
                 <Layout>
@@ -50,7 +50,7 @@ function App() {
                     <Route path="/forget-password" element={<ForgotPassword />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/history" element={<History />} />
-                    {/* <Route path="/assets" element={<Assets />} /> */}
+                    {/* <Route path="/assets" element={<Assets />} /> 
                     <Route path="/change-password" element={<ChangePassword />} />
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -63,7 +63,8 @@ function App() {
                   </Routes>
                 </Layout>
               }
-            />
+            /> */}
+            <Routes path="*" element={<Navigate to="/admin" />} />
           </Routes>
           <ToastContainer
             position="top-right"

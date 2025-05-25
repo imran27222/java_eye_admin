@@ -1,9 +1,9 @@
 {
-  "name": "nft-frontend",
+  "name": "java_eye_admin",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://gfttreasure.com",
+  "homepage": "http://88.223.95.113:3000",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

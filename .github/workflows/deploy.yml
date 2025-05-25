@@ -3,7 +3,7 @@ name: Deploy React App to VPS on Port 3000
 on:
   push:
     branches:
-      - deployement
+      - main
 
 jobs:
   deploy:
