@@ -12,10 +12,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Check VPS secrets
+      - name: Check VPS_HOST and VPS_USER
         run: |
           echo "VPS_HOST is set to: ${{ secrets.VPS_HOST }}"
           echo "VPS_USER is set to: ${{ secrets.VPS_USER }}"
+
+      - name: Check if VPS_SSH_KEY is non-empty (do NOT print it)
+        run: |
           if [ -z "${{ secrets.VPS_SSH_KEY }}" ]; then
             echo "❌ VPS_SSH_KEY is empty or not set!"
             exit 1
@@ -28,11 +31,21 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          echo "🔐 SSH private key saved and permissions set."
           ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          echo "🗝️ Known hosts updated with ${{ secrets.VPS_HOST }}"
 
       - name: Test SSH connection
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo '✅ Connected to VPS'"
+
+      - name: Log SSH test success
+        if: ${{ success() }}
+        run: echo "🎉 SSH connection test succeeded."
+
+      - name: Log SSH test failure
+        if: ${{ failure() }}
+        run: echo "❌ SSH connection test failed. Check keys and host."
 
       - name: Ensure target directory exists
         run: |
