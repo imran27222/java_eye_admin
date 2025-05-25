@@ -37,7 +37,7 @@ jobs:
 
       - name: Test SSH connection
         run: |
-          ssh -v -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo '✅ Connected to VPS'"
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo '✅ Connected to VPS'"
 
       - name: Log SSH test success
         if: ${{ success() }}
